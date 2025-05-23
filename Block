@@ -1,0 +1,19 @@
+class Block{
+  PVector location;
+  color col;
+  int w;
+  int h;
+  
+  Block(int x,int y,int wid,int hei,color c){
+    location=new PVector(x,y);
+    col=c;
+    w=wid;
+    h=hei;
+  }
+  
+  void drawBlock(){
+    stroke(1);
+    fill(col);
+    rect(location.x,location.y,w,h);
+  }
+}
