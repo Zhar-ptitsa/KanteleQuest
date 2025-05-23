@@ -1,0 +1,15 @@
+class Player{
+  PVector location;
+  PVector velocity;
+  
+  Player(){
+    location=new PVector(width/2,height/2);
+    velocity=new PVector(0,0);
+  }
+  
+  void drawPlayer(){
+    fill(#9320F2);
+    stroke(#55257C);
+    rect(location.x,location.y,20,20);
+  }
+}
