@@ -26,7 +26,7 @@ class Player {
 
      fill(0,255,0);
     rectMode(CENTER);
-    rect(pos.x,pos.y,size,size*2,5);
+    rect(pos.x,pos.y,size,size,5);
    }
  }
  
