@@ -10,7 +10,7 @@ void setup(){
   size(1080,720);
   background(0);
   vaino = new Player(width/2,height/2);
-  gravity = new PVector(0,0.00);
+  gravity = new PVector(0,0.009);
   obstacles = new ArrayList<Block>();
   obstacles.add(new Block(width/4,height/2+50,100,100));
     obstacles.add(new Block(3*width/4,height/2+50,100,100));
@@ -81,7 +81,7 @@ void moveCharacter(){
   for (Block b : obstacles){
     for (int[] points : new int[][]{{0,1},{1,2},{2,3},{3,0}}){
       stroke(255);
-      line(b.edges[points[0]].x,b.edges[points[0]].y,b.edges[points[1]].x,b.edges[points[1]].y);
+      //line(b.edges[points[0]].x,b.edges[points[0]].y,b.edges[points[1]].x,b.edges[points[1]].y);
       
       float latestX = -1;
       float latestY = -1;
@@ -104,8 +104,8 @@ void moveCharacter(){
            circle(latestX,latestY,5); 
          stroke(255);   
    
-    boolean condition1 = (vaino.pos.x<=latestX && latestX>=vaino.oldpos.x) || (vaino.pos.x>=latestX && latestX<=vaino.oldpos.x) || (vaino.pos.y<=latestY && vaino.oldpos.y>=latestY) || (vaino.pos.y>=latestY && vaino.oldpos.y<=latestY);
-    boolean condition2 = (b.edges[points[0]].x<= latestX && b.edges[points[1]].x>=latestX) || (b.edges[points[0]].x>=latestX && b.edges[points[1]].x<=latestX) || (b.edges[points[0]].y<= latestY && b.edges[points[1]].y>=latestY) || (b.edges[points[0]].y>=latestY && b.edges[points[1]].y<=latestY);
+    boolean condition1 = ((vaino.pos.x<=latestX && vaino.oldpos.x>=latestX) || (vaino.pos.x>=latestX && vaino.oldpos.x<=latestX)) && ((vaino.pos.y<=latestY && vaino.oldpos.y>=latestY) || (vaino.pos.y>=latestY && vaino.oldpos.y<=latestY));
+    boolean condition2 = ((b.edges[points[0]].x<= latestX && b.edges[points[1]].x>=latestX) || (b.edges[points[0]].x>=latestX && b.edges[points[1]].x<=latestX)) && ((b.edges[points[0]].y<= latestY && b.edges[points[1]].y>=latestY) || (b.edges[points[0]].y>=latestY && b.edges[points[1]].y<=latestY));
     println(latestX+","+latestY);
     println(condition1);   
     println(condition2);  
@@ -126,51 +126,8 @@ void moveCharacter(){
     Xlist.sort(Comparator.comparingInt(arr -> arr[0]));
   }
   if (Xlist.size()>0){
-    float Xedit;
-    float Yedit;
-    if (vaino.oldpos.x==vaino.pos.x){
-      Xedit = 0;
-      Yedit = 0;
-      if (vaino.oldpos.y<vaino.pos.y){
-        Yedit = -vaino.size/2;
-      }
-      if (vaino.oldpos.y>vaino.pos.y){
-        Yedit = vaino.size/2;
-      }
-    }else{
-      float slope = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x);
-      if (abs(slope)==1){
-        Xedit = -vaino.size/2;
-        Yedit = -vaino.size/2;
-      }else if (abs(slope)<1){
-        Yedit = -vaino.size/2;
-        Xedit = ( (vaino.oldpos.x-vaino.pos.x)*Yedit - ( vaino.pos.y*vaino.oldpos.x-vaino.oldpos.y*vaino.pos.x) ) / (vaino.oldpos.y-vaino.pos.y);
-        if (abs(Xedit)>vaino.size/2){
-          Xedit = -vaino.size/2;
-        }
-      }else if (slope!=0){
-        Xedit = -vaino.size/2;
-        Yedit = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x) * Xedit + ( vaino.pos.y*vaino.oldpos.x-vaino.oldpos.y*vaino.pos.x)/(vaino.oldpos.x-vaino.pos.x);
-                if (abs(Yedit)>vaino.size/2){
-          Yedit = -vaino.size/2;
-        }
-      }else{
-       Xedit = vaino.size/2;
-       Yedit = 0;
-      }
-      
-      if (slope>0){
-        Yedit*=-1;
-      }
-      if (vaino.pos.x<vaino.oldpos.x){
-       Xedit*=-1;
-       Yedit*=-1;
-      }
-      
-      println(slope);
-    }
-    println(Xedit+","+Yedit);
-    //vaino.pos = new PVector(Xlist.get(0)[0]+Xedit, Xlist.get(0)[1]+Yedit);
+
+    vaino.pos = new PVector(Xlist.get(0)[0], Xlist.get(0)[1]-10);
     circle(Xlist.get(0)[0], Xlist.get(0)[1], 5);
   }
 }
