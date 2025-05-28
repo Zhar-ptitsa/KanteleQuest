@@ -77,7 +77,7 @@ void moveCharacter(){
 
   line(vaino.oldpos.x,vaino.oldpos.y,vaino.pos.x+((vaino.pos.x-vaino.oldpos.x)*100),(vaino.pos.y-vaino.oldpos.y)*(100)+vaino.pos.y);
   
-  ArrayList<int[]> Xlist = new ArrayList<int[]>();
+  ArrayList<float[]> Xlist = new ArrayList<float[]>();
   for (Block b : obstacles){
     for (int[] points : new int[][]{{0,1},{1,2},{2,3},{3,0}}){
       stroke(255);
@@ -85,6 +85,7 @@ void moveCharacter(){
       
       float latestX = -1;
       float latestY = -1;
+      float slope = -1;
       
       if ((b.edges[points[1]].x-b.edges[points[0]].x)==0){
         if ((vaino.oldpos.x-vaino.pos.x)!=0){
@@ -106,27 +107,35 @@ void moveCharacter(){
    
     boolean condition1 = ((vaino.pos.x<=latestX && vaino.oldpos.x>=latestX) || (vaino.pos.x>=latestX && vaino.oldpos.x<=latestX)) && ((vaino.pos.y<=latestY && vaino.oldpos.y>=latestY) || (vaino.pos.y>=latestY && vaino.oldpos.y<=latestY));
     boolean condition2 = ((b.edges[points[0]].x<= latestX && b.edges[points[1]].x>=latestX) || (b.edges[points[0]].x>=latestX && b.edges[points[1]].x<=latestX)) && ((b.edges[points[0]].y<= latestY && b.edges[points[1]].y>=latestY) || (b.edges[points[0]].y>=latestY && b.edges[points[1]].y<=latestY));
-    println(latestX+","+latestY);
-    println(condition1);   
-    println(condition2);  
+ 
       
-      println();
-      if (condition1 && condition2){
-        Xlist.add(new int[]{int(latestX),int(latestY)});
+            if (condition1 && condition2){
+              slope = (b.edges[points[1]].y-b.edges[points[0]].y)/(b.edges[points[1]].x-b.edges[points[0]].x);
+        Xlist.add(new float[]{latestX,latestY, slope});
         stroke(0,150,0);
         circle(latestX,latestY,3);
       }
   }
   }
   if (vaino.pos.y<vaino.oldpos.y){
-    Xlist.sort(Comparator.comparingInt(arr -> arr[0]));
+    Xlist.sort(Comparator.comparingInt(arr -> int(arr[0])));
     Collections.reverse(Xlist);
   }
   if (vaino.pos.y>vaino.oldpos.x){
-    Xlist.sort(Comparator.comparingInt(arr -> arr[0]));
+    Xlist.sort(Comparator.comparingInt(arr -> int(arr[0])));
   }
   if (Xlist.size()>0){
-
+    float edgeSlope = Xlist.get(0)[2];
+    float beamSlope = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x);
+    if (Float.isNaN(edgeSlope)){
+      //non-vertical beam, vertical wall
+    }else{
+      if (Float.isNaN(beamSlope)){
+        //vertical beam, non-vertical wall
+      }else{
+      //combine slopes
+      }
+    }
     vaino.pos = new PVector(Xlist.get(0)[0], Xlist.get(0)[1]-10);
     circle(Xlist.get(0)[0], Xlist.get(0)[1], 5);
   }
