@@ -1,15 +1,35 @@
 class Player{
-  PVector location;
-  PVector velocity;
+  PVector pos;
+  PVector vel;
+  PVector acc;
+  PVector oldPos;
+  
   
   Player(){
-    location=new PVector(width/2,height/2);
-    velocity=new PVector(0,0);
+    pos=new PVector(width/2,height/2);
+    vel=new PVector(0,0);
+    acc=new PVector(0,0);
+    oldPos=new PVector(0,0);
   }
   
-  void drawPlayer(){
+  void display(){
     fill(#9320F2);
     stroke(#55257C);
-    rect(location.x,location.y,20,20);
+    rect(pos.x,pos.y,20,20);
+  }
+  
+  void update(){
+    oldPos=pos;
+    pos.add(vel);
+    vel.add(acc);
+    //acc=new PVector(0,0);
+  }
+
+  void accelerate(PVector input){
+    acc.add(input);
+  }
+  
+  void move(){
+    pos.add(vel);
   }
 }
