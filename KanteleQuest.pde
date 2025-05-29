@@ -6,7 +6,7 @@ PVector gravity;
 ArrayList<Block> obstacles;
 
 void setup(){
-  frameRate(50);
+  frameRate(60);
   size(1080,720);
   background(0);
   vaino = new Player(width/2,height/2);
@@ -166,7 +166,7 @@ void moveCharacter(){
     }
     println(theta*360/(2*PI));
     
-    float buffer = vaino.size / sin(theta);
+    float buffer = vaino.size / (2*sin(theta));
     println(buffer);
     
     float phi = 0;
@@ -181,10 +181,27 @@ void moveCharacter(){
     if (vaino.pos.y>vaino.oldpos.y){
        ybuffer*=-1; 
     }
+    if (vaino.pos.x>vaino.oldpos.x){
+     xbuffer*=-1; 
+    }
     
     println(xbuffer+","+ybuffer);
+    println(phi*360/(2*PI));
+    
+    
+    //normal force
+    PVector normal = new PVector(0,0);
+    if (!Float.isInfinite(edgeSlope)){
+     float rho = atan(edgeSlope);
+     float normMag = gravity.y*cos(rho);
+     normal = new PVector(normMag*sin(rho),normMag*cos(rho));
+     println(normal.x+","+normal.y+","+rho+","+normMag);
+    }
+    
+    
     
     vaino.pos = new PVector(Xlist.get(0)[0]+xbuffer, Xlist.get(0)[1]+ybuffer);
+    vaino.vel.sub(normal);
     circle(Xlist.get(0)[0], Xlist.get(0)[1], 5);
   }
 }

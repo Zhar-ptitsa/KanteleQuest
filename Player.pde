@@ -15,7 +15,7 @@ class Player {
   oldpos = pos;
   vel = new PVector(0,0);
   acc = new PVector(0,0);
-  size = 10;
+  size = 20;
   mode = 0;
   action = new PVector(0,0);
  }
