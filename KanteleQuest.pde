@@ -6,7 +6,7 @@ PVector gravity;
 ArrayList<Block> obstacles;
 
 void setup(){
-  frameRate(5);
+  frameRate(50);
   size(1080,720);
   background(0);
   vaino = new Player(width/2,height/2);
@@ -125,18 +125,66 @@ void moveCharacter(){
     Xlist.sort(Comparator.comparingInt(arr -> int(arr[0])));
   }
   if (Xlist.size()>0){
+    float theta = 0;
     float edgeSlope = Xlist.get(0)[2];
     float beamSlope = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x);
-    if (Float.isNaN(edgeSlope)){
+    if (Float.isInfinite(edgeSlope)){
       //non-vertical beam, vertical wall
+      if (beamSlope==0){
+         theta = PI/2; 
+         println("check1");
+      }else{
+        theta = abs(atan(beamSlope)-PI/2);
+        println("check2");
+      }
     }else{
-      if (Float.isNaN(beamSlope)){
+      if (Float.isInfinite(beamSlope)){
         //vertical beam, non-vertical wall
+        if (edgeSlope==0){
+          theta = PI/2;
+          println("check3");
+        }else{
+        theta = abs(atan(beamSlope));
+        println("check4");
+        }
       }else{
       //combine slopes
+      if (edgeSlope/beamSlope==-1){
+        theta = PI/2;
+        println("check5");
+      }else{
+        theta = abs(atan((edgeSlope-beamSlope)/(1+edgeSlope*beamSlope)));
+        println(edgeSlope/beamSlope);
+        println(edgeSlope+","+beamSlope);
+        println("check6");
+      }
       }
     }
-    vaino.pos = new PVector(Xlist.get(0)[0], Xlist.get(0)[1]-10);
+    if (theta>PI/2){
+      theta-=PI;
+      theta = abs(theta);
+    }
+    println(theta*360/(2*PI));
+    
+    float buffer = vaino.size / sin(theta);
+    println(buffer);
+    
+    float phi = 0;
+    if (Float.isInfinite(beamSlope)){
+     phi = PI/2; 
+    }else{
+      phi = atan(beamSlope);
+    }
+    float xbuffer = cos(phi)*buffer;
+    float ybuffer = sin(phi)*buffer;
+    
+    if (vaino.pos.y>vaino.oldpos.y){
+       ybuffer*=-1; 
+    }
+    
+    println(xbuffer+","+ybuffer);
+    
+    vaino.pos = new PVector(Xlist.get(0)[0]+xbuffer, Xlist.get(0)[1]+ybuffer);
     circle(Xlist.get(0)[0], Xlist.get(0)[1], 5);
   }
 }
