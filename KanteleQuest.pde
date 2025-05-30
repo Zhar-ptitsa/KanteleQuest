@@ -6,7 +6,7 @@ PVector gravity;
 ArrayList<Block> obstacles;
 
 void setup(){
-  frameRate(60);
+  frameRate(20);
   size(1080,720);
   background(0);
   vaino = new Player(width/2,height/2);
@@ -74,8 +74,15 @@ void moveCharacter(){
   strokeWeight(5);
   stroke(255);
            vaino.update();
-
-  line(vaino.oldpos.x,vaino.oldpos.y,vaino.pos.x+((vaino.pos.x-vaino.oldpos.x)*100),(vaino.pos.y-vaino.oldpos.y)*(100)+vaino.pos.y);
+ PVector beamEnd = vaino.pos.copy();
+ float beamSlope = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x);
+ if (vaino.vel.mag()<vaino.size){
+   float beamScaler = vaino.size/vaino.vel.mag();
+   PVector beam = new PVector((vaino.pos.x-vaino.oldpos.x),(vaino.pos.y-vaino.oldpos.y));
+   beam.mult(beamScaler);
+   beamEnd = vaino.oldpos.copy().add(beam);
+ }
+  line(vaino.oldpos.x,vaino.oldpos.y,beamEnd.x+((beamEnd.x-vaino.oldpos.x)*100),(beamEnd.y-vaino.oldpos.y)*(100)+beamEnd.y);
   
   ArrayList<float[]> Xlist = new ArrayList<float[]>();
   for (Block b : obstacles){
@@ -88,24 +95,24 @@ void moveCharacter(){
       float slope = -1;
       
       if ((b.edges[points[1]].x-b.edges[points[0]].x)==0){
-        if ((vaino.oldpos.x-vaino.pos.x)!=0){
+        if ((vaino.oldpos.x-beamEnd.x)!=0){
           latestX = b.edges[points[0]].x;
-          latestY = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x) * latestX + ( vaino.pos.y*vaino.oldpos.x-vaino.oldpos.y*vaino.pos.x)/(vaino.oldpos.x-vaino.pos.x);
+          latestY = (vaino.oldpos.y-beamEnd.y)/(vaino.oldpos.x-beamEnd.x) * latestX + ( beamEnd.y*vaino.oldpos.x-vaino.oldpos.y*beamEnd.x)/(vaino.oldpos.x-beamEnd.x);
         }else{
            continue; 
         }
-      }else if ((vaino.oldpos.x-vaino.pos.x)==0){
-        latestX = vaino.pos.x;
+      }else if ((vaino.oldpos.x-beamEnd.x)==0){
+        latestX = beamEnd.x;
                   latestY = (b.edges[points[1]].y-b.edges[points[0]].y)/(b.edges[points[1]].x-b.edges[points[0]].x) * latestX + ((b.edges[points[0]].y*b.edges[points[1]].x-b.edges[points[1]].y*b.edges[points[0]].x)/(b.edges[points[1]].x-b.edges[points[0]].x));
       }else{
-      latestX = (( ((b.edges[points[0]].y*b.edges[points[1]].x-b.edges[points[1]].y*b.edges[points[0]].x)/(b.edges[points[1]].x-b.edges[points[0]].x)) - ( vaino.pos.y*vaino.oldpos.x-vaino.oldpos.y*vaino.pos.x)/(vaino.oldpos.x-vaino.pos.x) ) / ( (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x)- (b.edges[points[1]].y-b.edges[points[0]].y)/(b.edges[points[1]].x-b.edges[points[0]].x))) ;
-                latestY = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x) * latestX + ( vaino.pos.y*vaino.oldpos.x-vaino.oldpos.y*vaino.pos.x)/(vaino.oldpos.x-vaino.pos.x);
+      latestX = (( ((b.edges[points[0]].y*b.edges[points[1]].x-b.edges[points[1]].y*b.edges[points[0]].x)/(b.edges[points[1]].x-b.edges[points[0]].x)) - ( beamEnd.y*vaino.oldpos.x-vaino.oldpos.y*beamEnd.x)/(vaino.oldpos.x-beamEnd.x) ) / ( (vaino.oldpos.y-beamEnd.y)/(vaino.oldpos.x-beamEnd.x)- (b.edges[points[1]].y-b.edges[points[0]].y)/(b.edges[points[1]].x-b.edges[points[0]].x))) ;
+                latestY = (vaino.oldpos.y-beamEnd.y)/(vaino.oldpos.x-beamEnd.x) * latestX + ( beamEnd.y*vaino.oldpos.x-vaino.oldpos.y*beamEnd.x)/(vaino.oldpos.x-beamEnd.x);
     }
     stroke(150);
            circle(latestX,latestY,5); 
          stroke(255);   
    
-    boolean condition1 = ((vaino.pos.x<=latestX && vaino.oldpos.x>=latestX) || (vaino.pos.x>=latestX && vaino.oldpos.x<=latestX)) && ((vaino.pos.y<=latestY && vaino.oldpos.y>=latestY) || (vaino.pos.y>=latestY && vaino.oldpos.y<=latestY));
+    boolean condition1 = ((beamEnd.x<=latestX && vaino.oldpos.x>=latestX) || (beamEnd.x>=latestX && vaino.oldpos.x<=latestX)) && ((beamEnd.y<=latestY && vaino.oldpos.y>=latestY) || (beamEnd.y>=latestY && vaino.oldpos.y<=latestY));
     boolean condition2 = ((b.edges[points[0]].x<= latestX && b.edges[points[1]].x>=latestX) || (b.edges[points[0]].x>=latestX && b.edges[points[1]].x<=latestX)) && ((b.edges[points[0]].y<= latestY && b.edges[points[1]].y>=latestY) || (b.edges[points[0]].y>=latestY && b.edges[points[1]].y<=latestY));
  
       
@@ -117,17 +124,16 @@ void moveCharacter(){
       }
   }
   }
-  if (vaino.pos.y<vaino.oldpos.y){
+  if (beamEnd.y<vaino.oldpos.y){
     Xlist.sort(Comparator.comparingInt(arr -> int(arr[0])));
     Collections.reverse(Xlist);
   }
-  if (vaino.pos.y>vaino.oldpos.x){
+  if (beamEnd.y>vaino.oldpos.x){
     Xlist.sort(Comparator.comparingInt(arr -> int(arr[0])));
   }
   if (Xlist.size()>0){
     float theta = 0;
     float edgeSlope = Xlist.get(0)[2];
-    float beamSlope = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x);
     if (Float.isInfinite(edgeSlope)){
       //non-vertical beam, vertical wall
       if (beamSlope==0){
@@ -178,10 +184,10 @@ void moveCharacter(){
     float xbuffer = cos(phi)*buffer;
     float ybuffer = sin(phi)*buffer;
     
-    if (vaino.pos.y>vaino.oldpos.y){
+    if (beamEnd.y>vaino.oldpos.y){
        ybuffer*=-1; 
     }
-    if (vaino.pos.x>vaino.oldpos.x){
+    if (beamEnd.x>vaino.oldpos.x){
      xbuffer*=-1; 
     }
     
@@ -196,6 +202,8 @@ void moveCharacter(){
      float normMag = gravity.y*cos(rho);
      normal = new PVector(normMag*sin(rho),normMag*cos(rho));
      println(normal.x+","+normal.y+","+rho+","+normMag);
+     println(normal.y+","+gravity.y);
+     println(vaino.vel.y+","+frameCount);
     }
     
     
