@@ -6,7 +6,7 @@ PVector gravity;
 ArrayList<Block> obstacles;
 
 void setup(){
-  frameRate(20);
+  frameRate(2);
   size(1080,720);
   background(0);
   vaino = new Player(width/2,height/2);
@@ -75,15 +75,20 @@ void moveCharacter(){
   stroke(255);
            vaino.update();
  PVector beamEnd = vaino.pos.copy();
- float beamSlope = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x);
- if (vaino.vel.mag()<vaino.size){
-   float beamScaler = vaino.size/vaino.vel.mag();
    PVector beam = new PVector((vaino.pos.x-vaino.oldpos.x),(vaino.pos.y-vaino.oldpos.y));
+ float beamSlope = (vaino.oldpos.y-vaino.pos.y)/(vaino.oldpos.x-vaino.pos.x);
+ if (beam.mag()<vaino.size){
+   float beamScaler = vaino.size/(beam.mag()*2);
+   println(beam.mag()+" "+beamScaler);
    beam.mult(beamScaler);
    beamEnd = vaino.oldpos.copy().add(beam);
+   println("Beam: "+beam.mag());
  }
-  line(vaino.oldpos.x,vaino.oldpos.y,beamEnd.x+((beamEnd.x-vaino.oldpos.x)*100),(beamEnd.y-vaino.oldpos.y)*(100)+beamEnd.y);
-  
+  line(vaino.oldpos.x,vaino.oldpos.y,beamEnd.x+((beamEnd.x-vaino.oldpos.x)*0),(beamEnd.y-vaino.oldpos.y)*(0)+beamEnd.y);
+  stroke(0,0,150);
+  circle(beamEnd.x,beamEnd.y,7);
+  stroke(150,150,0);
+  circle(vaino.oldpos.x,vaino.oldpos.y,7);
   ArrayList<float[]> Xlist = new ArrayList<float[]>();
   for (Block b : obstacles){
     for (int[] points : new int[][]{{0,1},{1,2},{2,3},{3,0}}){
