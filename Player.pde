@@ -8,7 +8,6 @@ class Player {
  int size;
  int mode;
  
- PVector action;
  
  Player(int x, int y){
   pos = new PVector(x, y);
@@ -17,7 +16,6 @@ class Player {
   acc = new PVector(0,0);
   size = 20;
   mode = 0;
-  action = new PVector(0,0);
  }
  
  void display(){
@@ -38,13 +36,6 @@ class Player {
  }
    
  
- void characterMotion(PVector newInput){
-   if (!action.equals(newInput)){
-    vel.sub(action);
-    action = newInput;
-    vel.add(action);
-   }
- }
  
  void accelerate(PVector newInput){
     acc.add(newInput); 
