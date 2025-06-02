@@ -4,33 +4,37 @@ Player vaino;
 PVector gravity;
 PVector startPosition;
 ArrayList<Block> obstacles;
+boolean started;
+int levelIndex;
+Levels[] levels;
 
 void setup(){
   frameRate(60);
   size(1080,720);
   
+  started = false;
+  levelIndex = 0;
+ levels = new Levels[]{new Levels("level1.txt"),new Levels("level2.txt")};
   
-  //level data
-  background(0);
-  gravity = new PVector(0,0.20);
-  obstacles = new ArrayList<Block>();
-  obstacles.add(new Block(width/4,height/2+50,100,100));
-  obstacles.add(new Obstacle(3*width/4,height/2+50,100,100));
-  obstacles.add(new Block(2*width/4,3*height/4+50,100,100));
-  startPosition = new PVector(width/2,height/2);
-  float jump = 7;
-  float walk = 5;
+}
+
+void draw(){
+  if (!started){
+      //level data
+  background(levels[levelIndex].backdrop);
+  gravity = levels[levelIndex].gravity;
+  obstacles = levels[levelIndex].obstacles;
+  startPosition = levels[levelIndex].startPosition;
+  float jump = levels[levelIndex].jump;
+  float walk = levels[levelIndex].walk;
   
   vaino = new Player(startPosition.x,startPosition.y, jump, walk);
 
 
 
    vaino.display();
-
-  
-}
-
-void draw(){
+   started = true;
+  }
   background(0);
  vaino.accelerate(gravity);
  
@@ -38,13 +42,9 @@ void draw(){
  for (Block s : obstacles){
   s.display(); 
  }
- try{
   moveCharacter();
    vaino.display();
 
- }catch (Exception e){
- //this means it reset  
- }
 
 
 
@@ -107,7 +107,19 @@ void reset(){
   vaino.acc= new PVector(0,0);
 }
 
-void moveCharacter() throws Exception{
+void levelup(){
+  vaino.display();
+  reset();
+  if (levelIndex<levels.length-1){
+     levelIndex+=1;
+     started = false;
+  }else{
+        noLoop();
+    background(255);
+  }
+}
+
+void moveCharacter(){
   ArrayList<float[]> collisions = new ArrayList<float[]>();
   strokeWeight(5);
   stroke(255);
@@ -147,6 +159,8 @@ void moveCharacter() throws Exception{
                    }else if (b.type==1){
                      reset();
 
+                   }else if (b.type==2){
+                     levelup();
                    }
                  
                }else{
@@ -174,6 +188,8 @@ void moveCharacter() throws Exception{
                    }else if (b.type==1){
                      reset();
 
+                   }else if (b.type==2){
+                     levelup();
                    }
                  
                }else{
@@ -202,6 +218,8 @@ void moveCharacter() throws Exception{
                      reset();
 
                      
+                   }else if (b.type==2){
+                     levelup();
                    }
                
                }else{
