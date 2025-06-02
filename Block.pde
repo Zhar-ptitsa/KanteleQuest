@@ -1,10 +1,12 @@
 class Block {
  PVector[] edges;
  int[] coords;
+ int type;
  
  Block(int x, int y, int w, int h){
    coords = new int[]{x,y,w,h};
-   edges = new PVector[]{new PVector(x-w,y-h),new PVector(x+w,y-h),new PVector(x+w,y+h),new PVector(x-w,y+h)};
+   edges = new PVector[]{new PVector(x-w,y+h),new PVector(x+w,y+h),new PVector(x+w,y-h),new PVector(x-w,y-h)};
+   type = 0;
  }
   
   void display(){
