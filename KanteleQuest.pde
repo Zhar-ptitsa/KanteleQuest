@@ -14,7 +14,7 @@ void setup(){
   
   started = false;
   levelIndex = 0;
- levels = new Levels[]{new Levels("level1.txt"),new Levels("level2.txt")};
+ levels = new Levels[]{new Levels("levels/level1.txt"),new Levels("levels/level2.txt")};
   
 }
 

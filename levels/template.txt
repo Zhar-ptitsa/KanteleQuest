@@ -1,0 +1,20 @@
+backdrop
+start x
+start y
+gravity x
+gravity y
+jump
+walk
+Block type
+Block point count
+Block x1
+Block y1
+Block x2
+Block y2
+Block x3
+Block y3
+Block x4
+Block y4
+Block velocity
+Block extent
+Block behavior
