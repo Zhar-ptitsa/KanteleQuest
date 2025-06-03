@@ -14,7 +14,7 @@ void setup(){
   
   started = false;
   levelIndex = 0;
- levels = new Levels[]{new Levels("levels/level1.txt"),new Levels("levels/level2.txt")};
+ levels = new Levels[]{new Levels("levels/test.txt"), new Levels("levels/level1.txt"),new Levels("levels/level2.txt")};
   
 }
 
@@ -42,7 +42,11 @@ void draw(){
  for (Block s : obstacles){
   s.display(); 
  }
+ try{
   moveCharacter();
+ }catch(Exception e){
+   //array changed --> reset or new level
+ }
    vaino.display();
 
 
@@ -100,26 +104,28 @@ void keyReleased(){
     }
 }
 
-void reset(){
+void reset() throws Exception{
+  levels[levelIndex].reset();
   vaino.display();
   vaino.pos= startPosition.copy();
   vaino.vel= new PVector(0,0);
   vaino.acc= new PVector(0,0);
+  throw new Exception("ARRAY CHANGED");
 }
 
-void levelup(){
+void levelup() throws Exception{
   vaino.display();
-  reset();
   if (levelIndex<levels.length-1){
      levelIndex+=1;
      started = false;
+     throw new Exception("beam me up");
   }else{
         noLoop();
     background(255);
   }
 }
 
-void moveCharacter(){
+void moveCharacter() throws Exception{
   ArrayList<float[]> collisions = new ArrayList<float[]>();
   strokeWeight(5);
   stroke(255);
@@ -130,7 +136,7 @@ void moveCharacter(){
     for (int pointIndex=0; pointIndex<=b.edges.length; pointIndex++){
       PVector[] side = new PVector[]{b.edges[(pointIndex)%b.edges.length],b.edges[(pointIndex+1)%b.edges.length]};
       stroke(255);
-      //line(side[0].x,side[0].y,side[1].x,side[1].y);
+      line(side[0].x,side[0].y,side[1].x,side[1].y);
       
       for (int i = 0; i < pCorners.length; i++){
          PVector[] beam = new PVector[]{pCorners[i],PVector.sub(pCorners[i],vaino.vel)};

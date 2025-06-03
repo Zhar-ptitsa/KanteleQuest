@@ -1,15 +1,15 @@
 class Goal extends Block{
   
-  Goal(int x, int y, int w, int h){
-    super(x,y,w,h);
+  Goal(PVector[] edges){
+    super(edges);
     super.type = 2;
   }
   
   @Override
   void display(){
-    rectMode(CENTER);
+    rectMode(CORNERS);
     strokeWeight(0);
     fill(255,255,0);
-    rect(coords[0],coords[1],2*coords[2],2*coords[3]);
+    rect(edges[0].x,edges[0].y,edges[2].x,edges[2].y);
   }
 }

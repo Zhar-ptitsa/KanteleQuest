@@ -1,19 +1,17 @@
 class Block {
  PVector[] edges;
- int[] coords;
  int type;
  
- Block(int x, int y, int w, int h){
-   coords = new int[]{x,y,w,h};
-   edges = new PVector[]{new PVector(x-w,y+h),new PVector(x+w,y+h),new PVector(x+w,y-h),new PVector(x-w,y-h)};
+ Block(PVector[] edges){
+   this.edges = edges;
    type = 0;
  }
   
   void display(){
-    rectMode(CENTER);
+    rectMode(CORNERS);
     strokeWeight(0);
     fill(0,0,255);
-    rect(coords[0],coords[1],2*coords[2],2*coords[3]);
+    rect(edges[0].x,edges[0].y,edges[2].x,edges[2].y);
   }
   
 }
