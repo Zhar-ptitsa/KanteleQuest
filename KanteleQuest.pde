@@ -6,6 +6,7 @@ Player p;
 int frameSpd;
 PVector gravity;
 PVector upForce;
+Button but;
 
 void setup(){
   size(1080,720);
@@ -14,6 +15,7 @@ void setup(){
   frameSpd=5;
   gravity=new PVector(0,0.009);
   upForce=new PVector(0,0);
+  but=new Button(width/2,height/2,80,80,"hi");
 }
 
 void drawGrid(){
@@ -43,6 +45,10 @@ void draw(){
   if(frameCount%frameSpd==0){
     p.updatePos();
     p.accelerate(gravity);
+  }
+  but.displayButton();
+  if(but.overButton()){
+    but.displayHover();
   }
 }
 
@@ -87,5 +93,12 @@ void keyPressed(){
       vel=new PVector(SQUARE_SIZE,0);
       p.updateVel(vel);
     }
+  }
+}
+
+void mousePressed(){
+  if(but.overButton()){
+    background(180,0,0);
+    noLoop();
   }
 }
