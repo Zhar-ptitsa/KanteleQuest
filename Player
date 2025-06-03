@@ -6,7 +6,7 @@ class Player{
   
   
   Player(){
-    pos=new PVector(width/2,height/2);
+    pos=new PVector(width/2,0);
     vel=new PVector(0,0);
     acc=new PVector(0,0);
     oldPos=new PVector(0,0);
@@ -15,21 +15,21 @@ class Player{
   void display(){
     fill(#9320F2);
     stroke(#55257C);
+    strokeWeight(1);
     rect(pos.x,pos.y,20,20);
   }
   
-  void update(){
+  void updatePos(){
     oldPos=pos;
     pos.add(vel);
     vel.add(acc);
-    //acc=new PVector(0,0);
   }
 
   void accelerate(PVector input){
     acc.add(input);
   }
   
-  void move(){
-    pos.add(vel);
+  void updateVel(PVector input){
+    vel=input;
   }
 }
