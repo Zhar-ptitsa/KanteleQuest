@@ -3,13 +3,50 @@ class Button{
   int y1;
   int x2;
   int y2;
+  int w;
+  int h;
   color col;
   color hover;
+  String text;
   
-  Button(int x,int y,int w,int h){
+  Button(int x,int y,int w,int h,String str){
     x1=x;
     y1=y;
     x2=x+w;
     y2=y+h;
+    this.w=w;
+    this.h=h;
+    col=color(0,100,0);
+    hover=color(255);
+    text=str;
   }
+  
+  void displayButton(){
+    stroke(1);
+    fill(col);
+    strokeWeight(0);
+    rect(x1,y1,w,h);
+    fill(0);
+    textAlign(CENTER,CENTER);
+    textSize(20);
+    text(text,x1+w/2,y1+h/2);
+  }
+   void displayHover(){
+    stroke(1);
+    fill(hover);
+    strokeWeight(0);
+    rect(x1,y1,w,h);
+    fill(0);
+    textAlign(CENTER,CENTER);
+    textSize(20);
+    text(text,x1+w/2,y1+h/2);
+  }
+  
+  boolean overButton(){
+    if(mouseX>=x1&&mouseX<=x2&&mouseY>=y1&&mouseY<=y2){
+      return true;
+    }
+    return false;
+  }
+  
 }
