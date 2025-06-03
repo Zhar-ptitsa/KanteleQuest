@@ -16,15 +16,15 @@ class Button{
     y2=y+h;
     this.w=w;
     this.h=h;
-    col=color(0,100,0);
+    col=color(#F0CB0F);
     hover=color(255);
     text=str;
   }
   
   void displayButton(){
-    stroke(1);
+    stroke(255,150,255);
     fill(col);
-    strokeWeight(0);
+    strokeWeight(3);
     rect(x1,y1,w,h);
     fill(0);
     textAlign(CENTER,CENTER);
@@ -32,9 +32,9 @@ class Button{
     text(text,x1+w/2,y1+h/2);
   }
    void displayHover(){
-    stroke(1);
+    stroke(200,60,200);
     fill(hover);
-    strokeWeight(0);
+    strokeWeight(3);
     rect(x1,y1,w,h);
     fill(0);
     textAlign(CENTER,CENTER);
