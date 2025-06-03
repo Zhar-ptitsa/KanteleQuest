@@ -6,7 +6,9 @@ Player p;
 int frameSpd;
 PVector gravity;
 PVector upForce;
-Button but;
+ArrayList<Button> buttons;
+ArrayList<Button> pauseButtons;
+boolean paused;
 
 void setup(){
   size(1080,720);
@@ -15,7 +17,13 @@ void setup(){
   frameSpd=5;
   gravity=new PVector(0,0.009);
   upForce=new PVector(0,0);
-  but=new Button(width/2,height/2,80,80,"hi");
+  buttons=new ArrayList<Button>();
+  Button but=new Button(width/2,height/2,80,80,"hi");
+  buttons.add(but);
+  paused=false;
+  Button levelSelect=new Button(width/2,height/2,200,80,"Level Select");
+  pauseButtons=new ArrayList<Button>();
+  pauseButtons.add(levelSelect);
 }
 
 void drawGrid(){
@@ -46,9 +54,12 @@ void draw(){
     p.updatePos();
     p.accelerate(gravity);
   }
-  but.displayButton();
-  if(but.overButton()){
-    but.displayHover();
+  for(int i=0;i<buttons.size();i++){
+    Button button=buttons.get(i);
+    button.displayButton();
+    if(button.overButton()){
+      button.displayHover();
+    }
   }
 }
 
@@ -63,15 +74,21 @@ void displayPause(){
   text("Paused",width/2,height/3);
   textSize(20);
   text("Press 'P' To Unpause",width/2,height*5/13);
+  for(int i=0;i<pauseButtons.size();i++){
+    Button button=pauseButtons.get(i);
+    button.displayButton();
+  }
 }
 
 void keyPressed(){
   if(keyCode=='P'){
     if(looping){
+      paused=true;
       noLoop();
       displayPause();
     }
     else{
+      paused=false;
       loop();
     }
   }
@@ -87,18 +104,32 @@ void keyPressed(){
     }
     if(keyCode==LEFT){
       vel=new PVector(-SQUARE_SIZE,0);
-      p.updateVel(vel);
+ //     p.updateVel(vel);
     }
     if(keyCode==RIGHT){
       vel=new PVector(SQUARE_SIZE,0);
-      p.updateVel(vel);
+  //    p.updateVel(vel);
     }
   }
 }
 
 void mousePressed(){
-  if(but.overButton()){
-    background(180,0,0);
-    noLoop();
+  if(paused){
+    for(int i=0;i<pauseButtons.size();i++){
+      Button button=pauseButtons.get(i);
+      if(button.overButton()){
+        background(180,0,0);
+        noLoop();
+      }
+    }
+  }
+  else{
+    for(int i=0;i<buttons.size();i++){
+      Button button=buttons.get(i);
+      if(button.overButton()){
+        background(180,0,0);
+        noLoop();
+      }
+    }
   }
 }
