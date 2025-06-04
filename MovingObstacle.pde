@@ -1,14 +1,17 @@
 class MovingObstacle extends Obstacle{
-  PVector velocity;
+  
   int extent;
   int type;
   int passed;
   PVector[] startEdges;
+  PVector[] bufferedStart;
   MovingObstacle(PVector[] edges,PVector velocity, int extent, int type){
         super(edges);
         startEdges = new PVector[edges.length];
+        bufferedStart  = new PVector[edges.length];
         for (int i = 0; i<edges.length;i++){
          startEdges[i]=edges[i].copy();
+         bufferedStart[i]=super.buffered[i].copy();
         }
         this.velocity=velocity;
         this.extent=extent;
@@ -18,8 +21,10 @@ class MovingObstacle extends Obstacle{
   @Override
     void display(){
       if (passed >= 0 && passed<extent){
-        for (PVector edge : edges){
-          edge.add(velocity);
+        for (int i = 0; i<edges.length;i++){
+          edges[i].add(velocity);
+          buffered[i].add(velocity);
+          
         }
         passed++;
       }else{
@@ -30,6 +35,7 @@ class MovingObstacle extends Obstacle{
         }else if (type==1){
           for (int i = 0; i<startEdges.length;i++){
              edges[i]=startEdges[i].copy();
+             buffered[i]=bufferedStart[i].copy();
                      passed = 0;
 
           }

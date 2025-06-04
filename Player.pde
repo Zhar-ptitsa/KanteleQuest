@@ -5,7 +5,8 @@ class Player {
  boolean[] directions= new boolean[]{false,false,false};
  PVector oldpos;
  PVector offset;
- 
+ PVector[] modeBox;
+ float modeHeading;
  float jump;
  float walk;
 
@@ -23,6 +24,8 @@ class Player {
   mode = 0;
   jump = j;
   walk = w;
+  modeBox = new PVector[]{new PVector(0,0), new PVector(0,0), new PVector(0,0), new PVector(0,0)};
+  modeHeading = 0;
  }
  
  void display(){
