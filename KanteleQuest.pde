@@ -9,7 +9,7 @@ int levelIndex;
 Levels[] levels;
 
 void setup(){
-  frameRate(6);
+  frameRate(60);
   size(1080,720);
   
   started = false;
@@ -234,7 +234,7 @@ println(vaino.vel);
 
           vaino.accelerate(gravity.copy().mult(-1));
           println(vaino.acc+","+vaino.vel);
-          if (vaino.vel.y<0){
+          if (vaino.vel.y>0){
             vaino.vel=new PVector(vaino.vel.x,0);
           }
         }else{
@@ -280,7 +280,7 @@ println(vaino.vel);
     for (int pointIndex=0; pointIndex<=b.edges.length; pointIndex++){
       PVector[] side = new PVector[]{b.edges[(pointIndex)%b.edges.length],b.edges[(pointIndex+1)%b.edges.length]};
       stroke(255);
-     // line(side[0].x,side[0].y,side[1].x,side[1].y);
+      line(side[0].x,side[0].y,side[1].x,side[1].y);
       
       for (int i = 0; i < pCorners.length; i++){
          PVector[] beam = new PVector[]{pCorners[i],PVector.sub(OldpCorners[i],vaino.vel)};
@@ -408,7 +408,7 @@ println(vaino.vel);
       }
         PVector[] barrier = new PVector[]{new PVector(collisions.get(0)[2],collisions.get(0)[3]),new PVector(collisions.get(0)[4],collisions.get(0)[5])};
         
-          PVector shifter = new PVector(collisions.get(0)[2]-collisions.get(0)[4],collisions.get(0)[3]-collisions.get(0)[5]).rotate(PI/2).normalize().mult(0.3);
+          PVector shifter = new PVector(collisions.get(0)[2]-collisions.get(0)[4],collisions.get(0)[3]-collisions.get(0)[5]).rotate(PI/2).normalize().mult(20);
        
         vaino.modeBox = new PVector[]{barrier[0].copy().sub(shifter),barrier[0].copy().add(shifter),barrier[1].copy().add(shifter),barrier[1].copy().sub(shifter)};
         for (PVector vert : vaino.modeBox){
