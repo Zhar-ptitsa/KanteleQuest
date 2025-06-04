@@ -12,6 +12,7 @@ boolean paused;
 boolean levelSelectScreen;
 
 void setup(){
+  rectMode(CORNER);
   size(1080,720);
   drawGrid();
   p=new Player();
@@ -32,6 +33,7 @@ void setup(){
 }
 
 void drawGrid(){
+  rectMode(CORNER);
   xSquares=width/SQUARE_SIZE;
   ySquares=height/SQUARE_SIZE;
   fill(255);
@@ -56,7 +58,7 @@ void draw(){
   else if(!paused){
     background(255);
     drawGrid();
-    Block b=new Block(20*SQUARE_SIZE,60*SQUARE_SIZE,70*SQUARE_SIZE,10*SQUARE_SIZE,#199017);
+    Block b=new Block(20,20,10,10);
     b.display();
     p.display();
     if(frameCount%frameSpd==0){
@@ -77,6 +79,7 @@ void draw(){
 }
 
 void displayPause(){
+  rectMode(CORNER);
   stroke(#233CD8);
   strokeWeight(3);
   fill(#0D98FF);
