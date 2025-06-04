@@ -227,7 +227,9 @@ println(vaino.vel);
       if (insideMode){
         
              //   println("check check");
-      
+         for (PVector vertex : vaino.modeBox){
+           vertex.add(obstacles.get(vaino.modeIndex).velocity);
+         }
         
         if (PI/2<vaino.modeHeading && vaino.modeHeading<3*PI/2){
         if (vaino.modeHeading==PI){
@@ -240,18 +242,20 @@ println(vaino.vel);
         }else{
           println();
           vaino.accelerate(new PVector(gravity.x*(cos(vaino.modeHeading)*sin(vaino.modeHeading)),gravity.y*(cos(vaino.modeHeading)*cos(vaino.modeHeading))));
-        if(vaino.vel.copy().rotate(-1*vaino.modeHeading).y>0) {
+        if(vaino.vel.copy().rotate(-1*vaino.modeHeading).y<0) {
           vaino.vel.sub(new PVector(0,vaino.vel.copy().rotate(-1*vaino.modeHeading).y).rotate(vaino.modeHeading));
         }
         }
       }else{
-                if(vaino.vel.copy().rotate(-1*vaino.modeHeading).y>0) {
+                if(vaino.vel.copy().rotate(-1*vaino.modeHeading).y<0) {
           vaino.vel.sub(new PVector(0,vaino.vel.copy().rotate(-1*vaino.modeHeading).y).rotate(vaino.modeHeading));
                 }
       }
 
       }else{
         vaino.mode = 0;
+        vaino.modeBox = new PVector[]{new PVector(0,0), new PVector(0,0), new PVector(0,0), new PVector(0,0)};
+        vaino.modeHeading = 0;
       }
   
   
@@ -273,8 +277,8 @@ println(vaino.vel);
 
   
   
-  for (Block b : obstacles){
-    
+  for (int blockIndex = 0; blockIndex < obstacles.size(); blockIndex++){
+    Block b = obstacles.get(blockIndex);
     
     
     for (int pointIndex=0; pointIndex<=b.edges.length; pointIndex++){
@@ -304,7 +308,7 @@ println(vaino.vel);
                
                    if (b.type == 0){
                      
-                     collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y});
+                     collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
                      
                    }else if (b.type==1){
                      reset();
@@ -333,7 +337,7 @@ println(vaino.vel);
                
                    if (b.type == 0){
                      
-                     collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y});
+                     collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
                      
                    }else if (b.type==1){
                      reset();
@@ -362,7 +366,7 @@ println(vaino.vel);
                
                    if (b.type == 0){
                      
-                     collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y});
+                     collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
                      
                    }else if (b.type==1){
                      reset();
@@ -408,13 +412,14 @@ println(vaino.vel);
       }
         PVector[] barrier = new PVector[]{new PVector(collisions.get(0)[2],collisions.get(0)[3]),new PVector(collisions.get(0)[4],collisions.get(0)[5])};
         
-          PVector shifter = new PVector(collisions.get(0)[2]-collisions.get(0)[4],collisions.get(0)[3]-collisions.get(0)[5]).rotate(PI/2).normalize().mult(20);
+          PVector shifter = new PVector(collisions.get(0)[2]-collisions.get(0)[4],collisions.get(0)[3]-collisions.get(0)[5]).rotate(PI/2).normalize().mult(0.5);
        
         vaino.modeBox = new PVector[]{barrier[0].copy().sub(shifter),barrier[0].copy().add(shifter),barrier[1].copy().add(shifter),barrier[1].copy().sub(shifter)};
         for (PVector vert : vaino.modeBox){
          circle(vert.x,vert.y,5); 
         }
         vaino.modeHeading = collisions.get(0)[1];
+        vaino.modeIndex = int(collisions.get(0)[6]);
       }
       
 }

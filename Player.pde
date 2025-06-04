@@ -7,6 +7,7 @@ class Player {
  PVector offset;
  PVector[] modeBox;
  float modeHeading;
+ int modeIndex;
  float jump;
  float walk;
 
@@ -26,6 +27,7 @@ class Player {
   walk = w;
   modeBox = new PVector[]{new PVector(0,0), new PVector(0,0), new PVector(0,0), new PVector(0,0)};
   modeHeading = 0;
+  modeIndex = 0;
  }
  
  void display(){
