@@ -22,6 +22,7 @@ class Button{
   }
   
   void displayButton(){
+    rectMode(CORNER);
     stroke(255,150,255);
     fill(col);
     strokeWeight(3);
