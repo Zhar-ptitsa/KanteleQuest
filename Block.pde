@@ -11,8 +11,9 @@ class Block {
   
   void display(){
     rectMode(CENTER);
-    strokeWeight(0);
-    fill(0,0,255);
+    strokeWeight(1);
+    stroke(1);
+    fill(#0041FF);
     rect(coords[0],coords[1],2*coords[2],2*coords[3]);
   }
   
