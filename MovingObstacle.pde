@@ -5,8 +5,10 @@ class MovingObstacle extends Obstacle{
   int passed;
   PVector[] startEdges;
   PVector[] bufferedStart;
-  MovingObstacle(PVector[] edges,PVector velocity, int extent, int type){
-        super(edges);
+  PVector startCenter;
+  MovingObstacle(PVector[] edges,PVector velocity, int extent, int type, PImage graphics){
+        super(edges, graphics);
+        startCenter = center.copy();
         startEdges = new PVector[edges.length];
         bufferedStart  = new PVector[edges.length];
         for (int i = 0; i<edges.length;i++){
@@ -26,6 +28,7 @@ class MovingObstacle extends Obstacle{
           buffered[i].add(velocity);
           
         }
+                  center.add(velocity);            
         passed++;
       }else{
         if (type==0){
@@ -39,6 +42,8 @@ class MovingObstacle extends Obstacle{
                      passed = 0;
 
           }
+                       center = startCenter.copy();
+
         }else if (type==2){
           velocity=new PVector(0,0);
         }

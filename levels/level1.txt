@@ -5,7 +5,9 @@
 0.2
 7
 5
+images/playerSprites/default
 G
+images/yellow200Square.png
 4
 170
 310
@@ -20,6 +22,7 @@ G
 -
 -
 O
+images/red200Square.png
 4
 710
 310
@@ -34,6 +37,7 @@ O
 -
 -
 B
+images/blue200Square.png
 4
 440
 490

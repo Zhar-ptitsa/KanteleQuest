@@ -5,7 +5,9 @@
 0.2
 9
 5
+images/playerSprites/default
 B
+images/blue1080Plate.png
 4
 1080
 600
@@ -20,6 +22,7 @@ B
 -
 -
 B
+images/blue1000Plate.png
 4
 1000
 450
@@ -34,6 +37,7 @@ B
 -
 -
 OM
+images/diamondObstacle.png
 4
 700
 1820
@@ -48,6 +52,7 @@ OM
 250
 1
 OM
+images/diamondObstacle.png
 4
 500
 1620
@@ -62,6 +67,7 @@ OM
 250
 1
 G
+images/yellow50Square.png
 4
 0
 400

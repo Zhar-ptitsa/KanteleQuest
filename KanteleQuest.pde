@@ -29,7 +29,7 @@ void draw(){
   float walk = levels[levelIndex].walk;
   
   vaino = new Player(startPosition.x,startPosition.y, jump, walk);
-
+  vaino.loadFolder(levels[levelIndex].PlayerFolder);
 
 
    vaino.display();
@@ -285,7 +285,7 @@ void moveCharacter() throws Exception{
       PVector[] side = new PVector[]{b.edges[(pointIndex)%b.edges.length],b.edges[(pointIndex+1)%b.edges.length]};
       stroke(255);
       strokeWeight(1);
-      line(side[0].x,side[0].y,side[1].x,side[1].y);
+    //  line(side[0].x,side[0].y,side[1].x,side[1].y);
       strokeWeight(5);
       for (int i = 0; i < pCorners.length; i++){
          PVector[] beam = new PVector[]{pCorners[i],PVector.sub(OldpCorners[i],vaino.vel)};

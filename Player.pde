@@ -3,6 +3,14 @@ class Player {
  PVector vel;
  PVector acc;
  boolean[] directions= new boolean[]{false,false,false};
+ 
+ 
+ PImage air;
+ PImage ground;
+ PImage left;
+ PImage right;
+ 
+ 
  PVector oldpos;
  PVector offset;
  PVector[] modeBox;
@@ -32,10 +40,20 @@ class Player {
  
  void display(){
    //println(mode);
-     strokeWeight(0);
-     fill(75*mode,255-75*mode,75*mode);
-    rectMode(CORNERS);
-    rect(pos.x-offset.x,pos.y-offset.y,pos.x+offset.x,pos.y+offset.y,5);
+    // strokeWeight(0);
+    // fill(75*mode,255-75*mode,75*mode);
+   // rectMode(CORNERS);
+   // rect(pos.x-offset.x,pos.y-offset.y,pos.x+offset.x,pos.y+offset.y,5);
+   imageMode(CENTER);
+   if (mode == 0){
+     image(air,pos.x,pos.y);
+   }else if (mode == 1){
+     image(ground,pos.x,pos.y);
+   }else if (mode == 3){
+    image(right,pos.x,pos.y); 
+   }else if (mode == 2){
+     image(left,pos.x,pos.y);
+   }
 
  }
  
@@ -49,6 +67,14 @@ class Player {
  
  void accelerate(PVector newInput){
     acc.add(newInput); 
+ }
+ 
+ void loadFolder(String location){
+   air = loadImage(location+"/air.png");
+   ground = loadImage(location+"/ground.png");
+   left = loadImage(location+"/left.png");
+   right = loadImage(location+"/right.png");
+
  }
  
 }

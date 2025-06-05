@@ -3,10 +3,12 @@ class MovingBlock extends Block{
   int extent;
   int type;
   int passed;
+  PVector startCenter;
   PVector[] startEdges;
   PVector[] bufferedStart;
-  MovingBlock(PVector[] edges,PVector velocity, int extent, int type){
-        super(edges);
+  MovingBlock(PVector[] edges,PVector velocity, int extent, int type, PImage graphics){
+        super(edges, graphics);
+        startCenter = center.copy();
         startEdges = new PVector[edges.length];
         bufferedStart  = new PVector[edges.length];
         for (int i = 0; i<edges.length;i++){
@@ -26,6 +28,8 @@ class MovingBlock extends Block{
           buffered[i].add(velocity);
           
         }
+                  center.add(velocity);
+
         passed++;
       }else{
         if (type==0){
@@ -36,9 +40,11 @@ class MovingBlock extends Block{
           for (int i = 0; i<startEdges.length;i++){
              edges[i]=startEdges[i].copy();
              buffered[i]=bufferedStart[i].copy();
-                     passed = 0;
+             passed = 0;
 
           }
+                       center = startCenter.copy();
+
         }else if (type==2){
           velocity=new PVector(0,0);
         }

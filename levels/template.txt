@@ -5,7 +5,9 @@ gravity x
 gravity y
 jump
 walk
+PLAYER SPRITE FOLDER [NOT IMPLEMENTED]
 Block type
+BLOCK FILE
 Block point count
 Block x1
 Block y1

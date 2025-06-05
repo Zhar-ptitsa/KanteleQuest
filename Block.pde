@@ -4,8 +4,10 @@ class Block {
  PVector[] buffered;
  PVector center;
  int type;
+ PImage graphics;
  
- Block(PVector[] edges){
+ Block(PVector[] edges, PImage graphics){
+   this.graphics = graphics;
    this.edges = edges;
    type = 0;
    velocity = new PVector(0,0);
@@ -21,10 +23,12 @@ class Block {
  }
   
   void display(){
-    rectMode(CORNERS);
-    strokeWeight(0);
-    fill(0,0,255);
-    rect(edges[0].x,edges[0].y,edges[2].x,edges[2].y);
+    imageMode(CENTER);
+    image(graphics,center.x,center.y);
+   // rectMode(CORNERS);
+  //  strokeWeight(0);
+  //  fill(0,0,255);
+ //   rect(edges[0].x,edges[0].y,edges[2].x,edges[2].y);
  //   strokeWeight(5);
   //  circle(center.x,center.y,5);
  //   for (PVector buffer : buffered){
