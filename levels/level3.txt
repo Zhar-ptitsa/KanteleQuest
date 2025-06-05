@@ -1,4 +1,4 @@
-150
+images/backgrounds/background3.png
 50
 550
 0

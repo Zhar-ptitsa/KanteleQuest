@@ -1,4 +1,4 @@
-150
+images/backgrounds/background1.png
 50
 500
 0

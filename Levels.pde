@@ -5,14 +5,14 @@ class Levels{
   PVector startPosition;
   float jump;
   float walk;
-  color backdrop;
+  PImage backdrop;
   String PlayerFolder;
   
   String[] lines;
   
   Levels(String file){
       lines  = loadStrings(file);
-      backdrop = Integer.parseInt(lines[0]);
+      backdrop = loadImage(lines[0]);
       startPosition = new PVector(Float.parseFloat(lines[1]),Float.parseFloat(lines[2]));
       gravity = new PVector(Float.parseFloat(lines[3]),Float.parseFloat(lines[4]));
       jump = Float.parseFloat(lines[5]);

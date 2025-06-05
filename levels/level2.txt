@@ -1,4 +1,4 @@
-0
+images/backgrounds/background2.png
 540
 360
 0

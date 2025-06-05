@@ -6,9 +6,12 @@ class Player {
  
  
  PImage air;
+ PImage air2;
  PImage ground;
+ PImage ground2;
  PImage left;
  PImage right;
+ boolean lookingLeft;
  
  
  PVector oldpos;
@@ -39,6 +42,11 @@ class Player {
  }
  
  void display(){
+   if (vel.x<0){
+    lookingLeft = true; 
+   }else if (vel.x>0){
+     lookingLeft = false;
+   }
    //println(mode);
     // strokeWeight(0);
     // fill(75*mode,255-75*mode,75*mode);
@@ -46,9 +54,19 @@ class Player {
    // rect(pos.x-offset.x,pos.y-offset.y,pos.x+offset.x,pos.y+offset.y,5);
    imageMode(CENTER);
    if (mode == 0){
+     if (lookingLeft){
+            image(air2,pos.x,pos.y);
+
+     }else{
      image(air,pos.x,pos.y);
+     }
    }else if (mode == 1){
+     if (lookingLeft){
+            image(ground2,pos.x,pos.y);
+
+     } else{
      image(ground,pos.x,pos.y);
+     }
    }else if (mode == 3){
     image(right,pos.x,pos.y); 
    }else if (mode == 2){
@@ -72,6 +90,8 @@ class Player {
  void loadFolder(String location){
    air = loadImage(location+"/air.png");
    ground = loadImage(location+"/ground.png");
+   air2 = loadImage(location+"/air2.png");
+   ground2 = loadImage(location+"/ground2.png");
    left = loadImage(location+"/left.png");
    right = loadImage(location+"/right.png");
 
