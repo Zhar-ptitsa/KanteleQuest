@@ -31,13 +31,12 @@ class Player {
  }
  
  void display(){
-   if (mode == 0){
-         strokeWeight(0);
-
-     fill(0,255,0);
+   //println(mode);
+     strokeWeight(0);
+     fill(75*mode,255-75*mode,75*mode);
     rectMode(CORNERS);
     rect(pos.x-offset.x,pos.y-offset.y,pos.x+offset.x,pos.y+offset.y,5);
-   }
+
  }
  
  void update(){

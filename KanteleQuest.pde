@@ -35,7 +35,7 @@ void draw(){
    vaino.display();
    started = true;
   }
-  background(0);
+  background(levels[levelIndex].backdrop);
  vaino.accelerate(gravity);
  
 
@@ -57,7 +57,7 @@ void draw(){
 void keyPressed(){
      if (key==CODED){
 
-      if (keyCode==UP && !vaino.directions[0]){
+      if (vaino.mode != 0 && keyCode==UP && !vaino.directions[0]){
         vaino.accelerate(new PVector(0,-vaino.jump));
         vaino.directions[0]=true;
       }
@@ -79,7 +79,7 @@ void keyReleased(){
       if (keyCode==UP){
         if (vaino.vel.y<-vaino.jump){
         vaino.accelerate(new PVector(0,vaino.jump));
-        }else{
+        }else if (vaino.vel.y<0){
          vaino.vel.y=0; 
         }
         vaino.directions[0]=false;
@@ -205,10 +205,10 @@ boolean parity(PVector[] vertices, PVector point){
 
 void moveCharacter() throws Exception{
  // println(vaino.modeBox);
-  stroke(255,0,0);
+//  stroke(255,0,0);
   for (int i = 0; i<4;i++){
-    strokeWeight(5);
-    line(vaino.modeBox[i].x,vaino.modeBox[i].y,vaino.modeBox[(i+1)%4].x,vaino.modeBox[(i+1)%4].y);
+//    strokeWeight(5);
+ //   line(vaino.modeBox[i].x,vaino.modeBox[i].y,vaino.modeBox[(i+1)%4].x,vaino.modeBox[(i+1)%4].y);
   }
   
   
@@ -405,11 +405,19 @@ void moveCharacter() throws Exception{
           PVector shifter = new PVector(collisions.get(0)[2]-collisions.get(0)[4],collisions.get(0)[3]-collisions.get(0)[5]).rotate(PI/2).normalize().mult(1);
        
         vaino.modeBox = new PVector[]{barrier[0].copy().sub(shifter),barrier[0].copy().add(shifter),barrier[1].copy().add(shifter),barrier[1].copy().sub(shifter)};
-        for (PVector vert : vaino.modeBox){
-         circle(vert.x,vert.y,5); 
-        }
+     //   for (PVector vert : vaino.modeBox){
+     //    circle(vert.x,vert.y,5); 
+     //   }
         vaino.modeHeading = collisions.get(0)[1];
         vaino.modeIndex = int(collisions.get(0)[6]);
+       // println(collisions.get(0)[1]);
+        if (collisions.get(0)[1]==PI){
+          vaino.mode = 1;
+        }else if(collisions.get(0)[1]>2*PI/5 && collisions.get(0)[1]<3*PI/5){
+          vaino.mode = 2;
+        }else if(collisions.get(0)[1]<-2*PI/5 && collisions.get(0)[1]>-3*PI/5){
+          vaino.mode = 3;
+        }
       }
       
 }
