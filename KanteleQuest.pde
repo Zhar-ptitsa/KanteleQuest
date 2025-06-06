@@ -16,19 +16,26 @@ AudioContext audioCon;
 
 
 void setup(){
+  println(PFont.list());
   frameRate(60);
   size(1080,720);
-  
+  background(0);
+  textAlign(CENTER,CENTER);
+  textSize(80);
+  textFont(createFont("Gabriola",128));
+  text("KANTELE QUEST",width/2,height/2);
   audioCon  = AudioContext.getDefaultContext();
   mainGain = new Gain(2, 0.2);
   
   started = false;
   levelIndex = 0;
   levels = new Levels[]{new Levels("levels/level1.txt"), new Levels("levels/level2.txt"), new Levels("levels/level3.txt"),new Levels("levels/level4.txt")};
-  
 }
 
 void draw(){
+  if (frameCount == 1){
+        delay(5000);
+  }
   if (!started){
       //level data
   background(levels[levelIndex].backdrop);
@@ -61,10 +68,11 @@ void draw(){
  }
  try{
   moveCharacter();
+     vaino.display();
+
  }catch(Exception e){
    //array changed --> reset or new level
  }
-   vaino.display();
 
 
 
@@ -132,7 +140,6 @@ void reset() throws Exception{
   mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
   mainGain.addInput(mainTrack);
   audioCon.out.addInput(mainGain);
-  vaino.display();
   vaino.pos= startPosition.copy();
   vaino.vel= new PVector(0,0);
   vaino.acc= new PVector(0,0);
@@ -140,18 +147,19 @@ void reset() throws Exception{
 }
 
 void levelup() throws Exception{
-  vaino.display();
     mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
       mainTrack.setKillOnEnd(true);
     mainTrack.setToEnd();
   if (levelIndex<levels.length-1){
+      vaino.display();
      levelIndex+=1;
      started = false;
-     throw new Exception("beam me up");
   }else{
         noLoop();
-    background(255);
+    background(0);
   }
+       throw new Exception("beam me up");
+
 }
 
 boolean parity(PVector[] vertices, PVector point){
@@ -300,6 +308,10 @@ void moveCharacter() throws Exception{
     }
     if (inside){
       vaino.pos.add(b.velocity);
+      if (b.type == 1){
+        vaino.display();
+        reset();
+      }
     }
   }
   PVector[] pCorners = new PVector[]{new PVector((vaino.pos.x-vaino.offset.x),(vaino.pos.y-vaino.offset.y)),new PVector((vaino.pos.x+vaino.offset.x),(vaino.pos.y+vaino.offset.y)),new PVector((vaino.pos.x-vaino.offset.x),(vaino.pos.y+vaino.offset.y)),new PVector((vaino.pos.x+vaino.offset.x),(vaino.pos.y-vaino.offset.y))};
@@ -340,8 +352,8 @@ void moveCharacter() throws Exception{
                      
                      collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
                      
-                   }else if (b.type==1){
-                     reset();
+                 //  }else if (b.type==1){
+                    // reset();
 
                    }else if (b.type==2){
                      levelup();
@@ -369,8 +381,8 @@ void moveCharacter() throws Exception{
                      
                      collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
                      
-                   }else if (b.type==1){
-                     reset();
+                //   }else if (b.type==1){
+               //      reset();
 
                    }else if (b.type==2){
                      levelup();
@@ -398,8 +410,8 @@ void moveCharacter() throws Exception{
                      
                      collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
                      
-                   }else if (b.type==1){
-                     reset();
+                 //  }else if (b.type==1){
+                 //    reset();
 
                      
                    }else if (b.type==2){
