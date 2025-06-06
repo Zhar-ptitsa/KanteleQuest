@@ -1,4 +1,5 @@
 images/backgrounds/background2.png
+music/12_LastVestigeofOldJoy.wav
 540
 360
 0

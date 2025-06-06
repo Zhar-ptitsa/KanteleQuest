@@ -1,4 +1,5 @@
 import java.util.Collections;
+import beads.*;
 
 Player vaino;
 PVector gravity;
@@ -8,13 +9,22 @@ boolean started;
 int levelIndex;
 Levels[] levels;
 
+SamplePlayer mainTrack;
+Gain mainGain;
+
+AudioContext audioCon;
+
+
 void setup(){
   frameRate(60);
   size(1080,720);
   
+  audioCon  = AudioContext.getDefaultContext();
+  mainGain = new Gain(2, 0.2);
+  
   started = false;
   levelIndex = 0;
- levels = new Levels[]{new Levels("levels/level1.txt"), new Levels("levels/level2.txt"), new Levels("levels/level3.txt"),new Levels("levels/level4.txt")};
+  levels = new Levels[]{new Levels("levels/level1.txt"), new Levels("levels/level2.txt"), new Levels("levels/level3.txt"),new Levels("levels/level4.txt")};
   
 }
 
@@ -30,6 +40,13 @@ void draw(){
   
   vaino = new Player(startPosition.x,startPosition.y, jump, walk);
   vaino.loadFolder(levels[levelIndex].PlayerFolder);
+  
+  mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
+  mainTrack.setKillOnEnd(false);
+  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
+  mainGain.addInput(mainTrack);
+  audioCon.out.addInput(mainGain);
+  audioCon.start();
 
 
    vaino.display();
@@ -106,6 +123,15 @@ void keyReleased(){
 
 void reset() throws Exception{
   levels[levelIndex].reset();
+  
+  mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
+      mainTrack.setKillOnEnd(true);
+    mainTrack.setToEnd();
+    mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
+  mainTrack.setKillOnEnd(false);
+  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
+  mainGain.addInput(mainTrack);
+  audioCon.out.addInput(mainGain);
   vaino.display();
   vaino.pos= startPosition.copy();
   vaino.vel= new PVector(0,0);
@@ -115,6 +141,9 @@ void reset() throws Exception{
 
 void levelup() throws Exception{
   vaino.display();
+    mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
+      mainTrack.setKillOnEnd(true);
+    mainTrack.setToEnd();
   if (levelIndex<levels.length-1){
      levelIndex+=1;
      started = false;

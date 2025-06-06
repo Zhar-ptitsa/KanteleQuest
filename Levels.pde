@@ -1,3 +1,5 @@
+
+
 class Levels{
   
   ArrayList<Block> obstacles = new ArrayList<Block>();
@@ -8,16 +10,19 @@ class Levels{
   PImage backdrop;
   String PlayerFolder;
   
+  String track;
+  
   String[] lines;
   
   Levels(String file){
       lines  = loadStrings(file);
       backdrop = loadImage(lines[0]);
-      startPosition = new PVector(Float.parseFloat(lines[1]),Float.parseFloat(lines[2]));
-      gravity = new PVector(Float.parseFloat(lines[3]),Float.parseFloat(lines[4]));
-      jump = Float.parseFloat(lines[5]);
-      walk = Float.parseFloat(lines[6]);
-      PlayerFolder = lines[7];
+      track= lines[1];
+      startPosition = new PVector(Float.parseFloat(lines[2]),Float.parseFloat(lines[3]));
+      gravity = new PVector(Float.parseFloat(lines[4]),Float.parseFloat(lines[5]));
+      jump = Float.parseFloat(lines[6]);
+      walk = Float.parseFloat(lines[7]);
+      PlayerFolder = lines[8];
       reset();
 
 
@@ -25,7 +30,7 @@ class Levels{
   
   void reset(){
     obstacles.clear();
-          int index = 8;
+          int index = 9;
       while (index<lines.length){
         PImage blockGraphics = loadImage(lines[index+1]);
         int pointCount = Integer.parseInt(lines[index+2]);

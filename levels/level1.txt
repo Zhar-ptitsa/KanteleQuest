@@ -1,4 +1,5 @@
 images/backgrounds/background1.png
+music/1_Intro.wav
 540
 360
 0

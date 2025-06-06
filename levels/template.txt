@@ -1,4 +1,5 @@
 backdrop location
+music location
 start x
 start y
 gravity x
