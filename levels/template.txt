@@ -1,0 +1,24 @@
+backdrop location
+music location
+start x
+start y
+gravity x
+gravity y
+jump
+walk
+PLAYER SPRITE FOLDER [NOT IMPLEMENTED]
+Block type
+BLOCK FILE
+Block point count
+Block x1
+Block y1
+Block x2
+Block y2
+........
+........
+Block x(point count)
+Block y(point count)
+Block velocity x
+Block velocity y
+Block extent
+Block behavior

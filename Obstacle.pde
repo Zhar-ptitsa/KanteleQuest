@@ -1,14 +1,22 @@
 class Obstacle extends Block{
-  Obstacle(int x, int y, int w, int h){
-    super(x,y,w,h);
+  Obstacle(PVector[] edges, PImage graphics){
+    super(edges, graphics);
     super.type = 1;
   }
   
   @Override
   void display(){
-    rectMode(CENTER);
-    strokeWeight(0);
-    fill(255,0,0);
-    rect(coords[0],coords[1],2*coords[2],2*coords[3]);
+    imageMode(CENTER);
+    image(graphics,center.x,center.y);
+   // rectMode(CORNERS);
+  //  strokeWeight(0);
+  //  fill(255,0,0);
+  //  rect(edges[0].x,edges[0].y,edges[2].x,edges[2].y);
+  //      strokeWeight(5);
+  //  circle(center.x,center.y,5);
+  //  for (PVector buffer : buffered){
+  //    circle(buffer.x,buffer.y,5); 
+  //  }
+    //strokeWeight(0);
   }
 }
