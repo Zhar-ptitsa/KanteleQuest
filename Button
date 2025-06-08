@@ -6,6 +6,7 @@ class Button{
   int w;
   int h;
   color col;
+  color border;
   color hover;
   String text;
   
@@ -17,6 +18,7 @@ class Button{
     this.w=w;
     this.h=h;
     col=color(#F0CB0F);
+    border=color(0);
     hover=color(255);
     text=str;
   }
