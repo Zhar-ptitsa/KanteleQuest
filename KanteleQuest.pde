@@ -1,5 +1,5 @@
 import java.util.Collections;
-import beads.*;
+//import beads.*;
 
 Player vaino;
 PVector gravity;
@@ -9,30 +9,30 @@ boolean started;
 int levelIndex;
 Levels[] levels;
 
-SamplePlayer mainTrack;
-Gain mainGain;
+//SamplePlayer mainTrack;
+//Gain mainGain;
 
-AudioContext audioCon;
+//AudioContext audioCon;
 
 
 ArrayList<Button> levelSelectButtons;
 ArrayList<Button> pauseButtons;
+ArrayList<Button> titleScreenButtons;
+Button winToTitle;
 
 boolean paused;
 boolean levelSelectScreen;
-
+boolean titleScreen;
+boolean youWin;
 
 void setup(){
-  println(PFont.list());
   frameRate(60);
   size(1080,720);
-  background(0);
   textAlign(CENTER,CENTER);
-  textSize(80);
   textFont(createFont("Gabriola",128));
-  text("KANTELE QUEST",width/2,height/2);
-  audioCon  = AudioContext.getDefaultContext();
-  mainGain = new Gain(2, 0.2);
+//  text("KANTELE QUEST",width/2,height/2);
+//  audioCon  = AudioContext.getDefaultContext();
+//  mainGain = new Gain(2, 0.2);
   
   started = false;
   levelIndex = 0;
@@ -41,17 +41,67 @@ void setup(){
   
   paused=false;
   levelSelectScreen=false;
+  titleScreen=true;
+  youWin=false;
   
   levelSelectButtons=new ArrayList<Button>();
-  Button but=new Button(width/3,height/3,80,80,"hi");
-  levelSelectButtons.add(but);
+  int x=100;
+  int y=100;
+  int num=1;
+  for(int r=0;r<4;r++){
+    for(int c=0;c<5;c++){
+      Button but=new Button(x,y,80,80,String.valueOf(num));
+      levelSelectButtons.add(but);
+      num++;
+      x+=200;
+    }
+    x=100;
+    y+=150;
+  }
+  Button title=new Button(20,20,60,60,"Title");
+  levelSelectButtons.add(title);
   
-  Button levelSelect=new Button(450,height/2,200,80,"Level Select");
   pauseButtons=new ArrayList<Button>();
+  Button levelSelect=new Button(450,height/2,200,80,"Level Select");
   pauseButtons.add(levelSelect);
+  
+  titleScreenButtons=new ArrayList<Button>();
+  Button levelSelectTitle=new Button(width/2+50,height*3/5,300,100,"Start");
+  titleScreenButtons.add(levelSelectTitle);
+  Button settings=new Button(width/2-350,height*3/5,300,100,"Settings");
+  titleScreenButtons.add(settings);
+  
+  winToTitle=new Button(450,height/2,200,80,"Back To Title");
+  
+ // Button center=new Button(width/2,height/2,1,1," ");
+ // titleScreenButtons.add(center);
 }
 
 void draw(){
+  if(titleScreen){
+    title();
+  }
+  else if(youWin){
+    displayWin();
+    if(winToTitle.overButton()){
+      winToTitle.displayHover();
+    }
+  }
+  else if(levelSelectScreen){
+    levelSelect();
+  }
+  else if(paused){
+    displayPause();
+    for(int i=0;i<pauseButtons.size();i++){
+      Button button=pauseButtons.get(i);
+      button.displayButton();
+      if(button.overButton()){
+        button.displayHover();
+      }
+    }
+  }
+  
+  else{
   if (frameCount == 1){
         delay(5000);
   }
@@ -67,12 +117,12 @@ void draw(){
   vaino = new Player(startPosition.x,startPosition.y, jump, walk);
   vaino.loadFolder(levels[levelIndex].PlayerFolder);
   
-  mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
-  mainTrack.setKillOnEnd(false);
-  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
-  mainGain.addInput(mainTrack);
-  audioCon.out.addInput(mainGain);
-  audioCon.start();
+//  mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
+//  mainTrack.setKillOnEnd(false);
+//  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
+//  mainGain.addInput(mainTrack);
+//  audioCon.out.addInput(mainGain);
+//  audioCon.start();
 
 
    vaino.display();
@@ -92,29 +142,9 @@ void draw(){
  }catch(Exception e){
    //array changed --> reset or new level
  }
-
-
-
-
-
-  if(levelSelectScreen){
-    levelSelect();
+ 
   }
-  else if(!paused){
- //   Block b=new Block(PVector[0]);
- //   b.display();
-    vaino.display();
-  }
-  if(paused){
-    displayPause();
-    for(int i=0;i<pauseButtons.size();i++){
-      Button button=pauseButtons.get(i);
-      button.displayButton();
-      if(button.overButton()){
-        button.displayHover();
-      }
-    }
-  }
+
 
 }
 
@@ -136,8 +166,8 @@ void levelSelect(){
   background(#FCDFBA);
   fill(0);
   textAlign(CENTER);
-  textSize(40);
-  text("LEVEL SELECT",width/2,50);
+  textSize(60);
+  text("LEVEL SELECT",width/2,60);
   for(int i=0;i<levelSelectButtons.size();i++){
     Button button=levelSelectButtons.get(i);
     button.displayButton();
@@ -147,7 +177,37 @@ void levelSelect(){
   }
 }
 
+void title(){
+  background(#24ADFF);
+  fill(0);
+  textAlign(CENTER,CENTER);
+  textSize(80);
+  textFont(createFont("Gabriola",128));
+  text("KANTELE QUEST",width/2,height/4);
+  for(int i=0;i<titleScreenButtons.size();i++){
+    Button button=titleScreenButtons.get(i);
+    button.displayButton();
+    if(button.overButton()){
+      button.displayHover();
+    }
+  }
+}
+
+void displayWin(){
+  background(#24ADFF);
+  fill(0);
+  textAlign(CENTER,CENTER);
+  textSize(80);
+  text("YOU WIN!!!",width/2,height/4);
+  winToTitle.displayButton();
+}
+
+void displaySettings(){
+  ;
+}
+
 void keyPressed(){
+  if(paused==false){
      if (key==CODED){
 
       if (vaino.mode != 0 && keyCode==UP && !vaino.directions[0]){
@@ -164,8 +224,10 @@ void keyPressed(){
       }
       
     }
-    
-    if(keyCode=='P'){
+  }
+  
+  if(keyCode=='P'){
+    if(!levelSelectScreen){
       if(paused==false){
         paused=true;
       }
@@ -173,14 +235,17 @@ void keyPressed(){
         paused=false;
       }
     }
-    try{
-      if(keyCode=='R'){
-        reset();
-      }
+  }
+    
+  try{
+    if(keyCode=='R'){
+      reset();
     }
-    catch(Exception e){
-      e.printStackTrace();
-    }
+  }
+  catch(Exception e){
+    e.printStackTrace();
+  }
+    
 }
 
 void keyReleased(){
@@ -214,17 +279,69 @@ void keyReleased(){
     }
 }
 
+
+void mousePressed(){
+  if(titleScreen){
+    for(int i=0;i<titleScreenButtons.size();i++){
+      Button button=titleScreenButtons.get(i);
+      if(button.overButton()){
+        if(button.text=="Start"){
+          titleScreen=false;
+          levelSelectScreen=true;
+        }
+        else if(button.text=="Settings"){
+          displaySettings();
+        }
+      }
+    }
+  }
+  else if(youWin){
+    if(winToTitle.overButton()){
+      youWin=false;
+      titleScreen=true;
+      started=false;
+    }
+  }
+  else if(paused){
+    for(int i=0;i<pauseButtons.size();i++){
+      Button button=pauseButtons.get(i);
+      if(button.overButton()){
+        if(button.text=="Level Select"){
+          levelSelectScreen=true;
+          paused=false;
+          started=false;
+        }
+      }
+    }
+  }
+  else{
+    for(int i=0;i<levelSelectButtons.size();i++){
+      Button button=levelSelectButtons.get(i);
+      if(button.overButton()){
+        if(button.text=="Title"){
+          titleScreen=true;
+        }
+        else{
+          levelIndex=Integer.parseInt(button.text)-1;
+        }
+        levelSelectScreen=false;
+      }
+    }
+  }
+}
+
+
 void reset() throws Exception{
   levels[levelIndex].reset();
   
-  mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
-      mainTrack.setKillOnEnd(true);
-    mainTrack.setToEnd();
-    mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
-  mainTrack.setKillOnEnd(false);
-  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
-  mainGain.addInput(mainTrack);
-  audioCon.out.addInput(mainGain);
+//  mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
+//      mainTrack.setKillOnEnd(true);
+//    mainTrack.setToEnd();
+//    mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
+//  mainTrack.setKillOnEnd(false);
+//  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
+//  mainGain.addInput(mainTrack);
+//  audioCon.out.addInput(mainGain);
   vaino.pos= startPosition.copy();
   vaino.vel= new PVector(0,0);
   vaino.acc= new PVector(0,0);
@@ -232,16 +349,15 @@ void reset() throws Exception{
 }
 
 void levelup() throws Exception{
-    mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
-      mainTrack.setKillOnEnd(true);
-    mainTrack.setToEnd();
+//    mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
+//      mainTrack.setKillOnEnd(true);
+//    mainTrack.setToEnd();
   if (levelIndex<levels.length-1){
       vaino.display();
      levelIndex+=1;
      started = false;
   }else{
-        noLoop();
-    background(0);
+    youWin=true;
   }
        throw new Exception("beam me up");
 
