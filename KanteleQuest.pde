@@ -29,10 +29,16 @@ void setup(){
   frameRate(60);
   size(1080,720);
   textAlign(CENTER,CENTER);
-  textFont(createFont("Gabriola",128));
-//  text("KANTELE QUEST",width/2,height/2);
-//  audioCon  = AudioContext.getDefaultContext();
-//  mainGain = new Gain(2, 0.2);
+  textSize(80);
+  textFont(createFont("Gabriola.ttf",128));
+  text("KANTELE QUEST",width/2,height/2);
+  JavaSoundAudioIO jsaio = new JavaSoundAudioIO(512);
+  //jsaio.printMixerInfo();
+  jsaio.selectMixer(1);
+  //audioCon = new AudioContext(jsaio);    //FOR LINUX
+  audioCon  = AudioContext.getDefaultContext();  //FOR WINDOWS
+  mainGain = new Gain(2, 0.05);
+
 
   started = false;
   levelIndex = 0;
@@ -78,6 +84,7 @@ void setup(){
 }
 
 void draw(){
+
   if(titleScreen){
     title();
   }
@@ -117,12 +124,13 @@ void draw(){
   vaino = new Player(startPosition.x,startPosition.y, jump, walk);
   vaino.loadFolder(levels[levelIndex].PlayerFolder);
 
-//  mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
-//  mainTrack.setKillOnEnd(false);
-//  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
-//  mainGain.addInput(mainTrack);
-//  audioCon.out.addInput(mainGain);
-//  audioCon.start();
+  mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
+  mainTrack.setKillOnEnd(false);
+  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
+  mainGain.addInput(mainTrack);
+  audioCon.out.addInput(mainGain);
+  audioCon.start();
+
 
 
    vaino.display();
@@ -146,6 +154,7 @@ void draw(){
   }
 
 
+  }
 }
 
 void displayPause(){
@@ -222,6 +231,7 @@ void keyPressed(){
         vaino.accelerate(new PVector(vaino.walk,0));
         vaino.directions[2]=true;
       }
+
 
     }
   }
@@ -334,14 +344,15 @@ void mousePressed(){
 void reset() throws Exception{
   levels[levelIndex].reset();
 
-//  mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
-//      mainTrack.setKillOnEnd(true);
-//    mainTrack.setToEnd();
-//    mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
-//  mainTrack.setKillOnEnd(false);
-//  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
-//  mainGain.addInput(mainTrack);
-//  audioCon.out.addInput(mainGain);
+  mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
+      mainTrack.setKillOnEnd(true);
+    mainTrack.setToEnd();
+    mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
+  mainTrack.setKillOnEnd(false);
+  mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
+  mainGain.addInput(mainTrack);
+  audioCon.out.addInput(mainGain);
+
   vaino.pos= startPosition.copy();
   vaino.vel= new PVector(0,0);
   vaino.acc= new PVector(0,0);
@@ -553,8 +564,9 @@ void moveCharacter() throws Exception{
 
                      collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
 
-                 //  }else if (b.type==1){
-                    // reset();
+                   }else if (b.type==1){
+                     reset();
+
 
                    }else if (b.type==2){
                      levelup();
@@ -582,8 +594,9 @@ void moveCharacter() throws Exception{
 
                      collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
 
-                //   }else if (b.type==1){
-               //      reset();
+                   }else if (b.type==1){
+                     reset();
+
 
                    }else if (b.type==2){
                      levelup();
@@ -611,8 +624,9 @@ void moveCharacter() throws Exception{
 
                      collisions.add(new float[]{new PVector(intersectX,intersectY).sub(beam[0]).mag()/vaino.vel.mag(),PVector.sub(side[1],side[0]).heading(),side[0].x,side[0].y,side[1].x,side[1].y, blockIndex});
 
-                 //  }else if (b.type==1){
-                 //    reset();
+                   }else if (b.type==1){
+                     reset();
+
 
 
                    }else if (b.type==2){
