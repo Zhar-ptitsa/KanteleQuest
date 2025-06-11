@@ -1,5 +1,5 @@
 import java.util.Collections;
-//import beads.*;
+import beads.*;
 
 Player vaino;
 PVector gravity;
@@ -9,10 +9,10 @@ boolean started;
 int levelIndex;
 Levels[] levels;
 
-//SamplePlayer mainTrack;
-//Gain mainGain;
+SamplePlayer mainTrack;
+Gain mainGain;
 
-//AudioContext audioCon;
+AudioContext audioCon;
 
 
 ArrayList<Button> levelSelectButtons;
@@ -28,10 +28,6 @@ boolean youWin;
 void setup(){
   frameRate(60);
   size(1080,720);
-  textAlign(CENTER,CENTER);
-  textSize(80);
-  textFont(createFont("Gabriola.ttf",128));
-  text("KANTELE QUEST",width/2,height/2);
   JavaSoundAudioIO jsaio = new JavaSoundAudioIO(512);
   //jsaio.printMixerInfo();
   jsaio.selectMixer(1);
@@ -79,8 +75,8 @@ void setup(){
 
   winToTitle=new Button(450,height/2,200,80,"Back To Title");
 
- // Button center=new Button(width/2,height/2,1,1," ");
- // titleScreenButtons.add(center);
+  Button center=new Button(width/2,height/2,1,1," ");
+  titleScreenButtons.add(center);
 }
 
 void draw(){
@@ -155,7 +151,6 @@ void draw(){
 
 
   }
-}
 
 void displayPause(){
   rectMode(CORNER);
@@ -191,7 +186,7 @@ void title(){
   fill(0);
   textAlign(CENTER,CENTER);
   textSize(80);
-  textFont(createFont("Gabriola",128));
+  textFont(createFont("Gabriola.ttf",128));
   text("KANTELE QUEST",width/2,height/4);
   for(int i=0;i<titleScreenButtons.size();i++){
     Button button=titleScreenButtons.get(i);
@@ -360,9 +355,10 @@ void reset() throws Exception{
 }
 
 void levelup() throws Exception{
-//    mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
-//      mainTrack.setKillOnEnd(true);
-//    mainTrack.setToEnd();
+    mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
+      mainTrack.setKillOnEnd(true);
+    mainTrack.setToEnd();
+  levels[levelIndex].reset();
   if (levelIndex<levels.length-1){
       vaino.display();
      levelIndex+=1;
