@@ -38,7 +38,7 @@ void setup(){
 
   started = false;
   levelIndex = 0;
-  levels = new Levels[]{new Levels("levels/level1.txt"), new Levels("levels/level2.txt"), new Levels("levels/level3.txt"),new Levels("levels/level4.txt")};
+  levels = new Levels[]{/*new Levels("levels/level1.txt"), new Levels("levels/level2.txt"), new Levels("levels/level3.txt"),new Levels("levels/level4.txt"),*/new Levels("levels/training1.txt"),new Levels("levels/training2.txt"),new Levels("levels/training3.txt"),new Levels("levels/training4.txt"),new Levels("levels/training5.txt")};
 
 
   paused=false;
@@ -74,9 +74,6 @@ void setup(){
   titleScreenButtons.add(settings);
 
   winToTitle=new Button(450,height/2,200,80,"Back To Title");
-
-  Button center=new Button(width/2,height/2,1,1," ");
-  titleScreenButtons.add(center);
 }
 
 void draw(){
@@ -213,7 +210,7 @@ void displaySettings(){
 void keyPressed(){
   if(paused==false){
      if (key==CODED){
-
+      if (started){
       if (vaino.mode != 0 && keyCode==UP && !vaino.directions[0]){
         vaino.accelerate(new PVector(0,-vaino.jump));
         vaino.directions[0]=true;
@@ -226,7 +223,7 @@ void keyPressed(){
         vaino.accelerate(new PVector(vaino.walk,0));
         vaino.directions[2]=true;
       }
-
+      }
 
     }
   }
@@ -255,7 +252,7 @@ void keyPressed(){
 
 void keyReleased(){
      if (key==CODED){
-
+      if (started){
       if (keyCode==UP){
         if (vaino.vel.y<-vaino.jump){
         vaino.accelerate(new PVector(0,vaino.jump));
@@ -280,7 +277,7 @@ void keyReleased(){
         }
         vaino.directions[2]=false;
       }
-
+      }
     }
 }
 
@@ -359,6 +356,8 @@ void levelup() throws Exception{
       mainTrack.setKillOnEnd(true);
     mainTrack.setToEnd();
   levels[levelIndex].reset();
+  vaino.vel= new PVector(0,0);
+  vaino.acc= new PVector(0,0);
   if (levelIndex<levels.length-1){
       vaino.display();
      levelIndex+=1;
@@ -475,7 +474,7 @@ void moveCharacter() throws Exception{
          for (PVector vertex : vaino.modeBox){
            vertex.add(obstacles.get(vaino.modeIndex).velocity);
          }
-
+        // vaino.pos.add(obstacles.get(vaino.modeIndex).velocity);
         if (PI/2<vaino.modeHeading && vaino.modeHeading<3*PI/2){
         if (vaino.modeHeading==PI){
 

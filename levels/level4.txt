@@ -1,4 +1,4 @@
-images/backgrounds/background1.png
+images/backgrounds/artil7-SWJpjHVPlOU-unsplash.jpg
 music/Track8_1.wav
 50
 500

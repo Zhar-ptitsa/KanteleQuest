@@ -1,4 +1,4 @@
-images/backgrounds/background2.png
+images/backgrounds/christian-ruehmer-mM_Mj6mgJJU-unsplash.jpg
 music/Track12_1.wav
 540
 360
