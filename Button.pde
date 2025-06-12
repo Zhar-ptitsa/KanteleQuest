@@ -18,30 +18,30 @@ class Button{
     this.w=w;
     this.h=h;
     col=color(#F0CB0F);
-    border=color(0);
-    hover=color(255);
+    border=color(#867113);
+    hover=color(#FCEA96);
     text=str;
   }
   
   void displayButton(){
     rectMode(CORNER);
-    stroke(255,150,255);
+    stroke(border);
     fill(col);
     strokeWeight(3);
     rect(x1,y1,w,h);
     fill(0);
     textAlign(CENTER,CENTER);
-    textSize(20);
+    textSize(35);
     text(text,x1+w/2,y1+h/2);
   }
-   void displayHover(){
-    stroke(200,60,200);
+  void displayHover(){
+    stroke(border);
     fill(hover);
     strokeWeight(3);
     rect(x1,y1,w,h);
     fill(0);
     textAlign(CENTER,CENTER);
-    textSize(20);
+    textSize(35);
     text(text,x1+w/2,y1+h/2);
   }
   
