@@ -47,11 +47,6 @@ class Player {
    }else if (vel.x>0){
      lookingLeft = false;
    }
-   //println(mode);
-    // strokeWeight(0);
-    // fill(75*mode,255-75*mode,75*mode);
-   // rectMode(CORNERS);
-   // rect(pos.x-offset.x,pos.y-offset.y,pos.x+offset.x,pos.y+offset.y,5);
    imageMode(CENTER);
    if (mode == 0){
      if (lookingLeft){
