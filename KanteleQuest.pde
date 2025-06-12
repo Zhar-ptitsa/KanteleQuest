@@ -5,6 +5,7 @@ Player vaino;
 PVector gravity;
 PVector startPosition;
 ArrayList<Block> obstacles;
+ArrayList<Text> textBoxes;
 boolean started;
 int levelIndex;
 Levels[] levels;
@@ -14,6 +15,7 @@ Gain mainGain;
 
 AudioContext audioCon;
 
+PFont mainFont;
 
 ArrayList<Button> levelSelectButtons;
 ArrayList<Button> pauseButtons;
@@ -25,20 +27,25 @@ boolean levelSelectScreen;
 boolean titleScreen;
 boolean youWin;
 
+// Everything commented out was used for debugging
+
 void setup(){
   frameRate(60);
   size(1080,720);
   JavaSoundAudioIO jsaio = new JavaSoundAudioIO(512);
-  //jsaio.printMixerInfo();
+  jsaio.printMixerInfo();
   jsaio.selectMixer(1);
-  //audioCon = new AudioContext(jsaio);    //FOR LINUX
+  audioCon = new AudioContext(jsaio);    //FOR LINUX
   audioCon  = AudioContext.getDefaultContext();  //FOR WINDOWS
   mainGain = new Gain(2, 0.05);
 
-
+  mainFont = createFont(sketchPath("Gabriola.ttf"),128);
   started = false;
   levelIndex = 0;
-  levels = new Levels[]{new Levels("levels/level1.txt"), new Levels("levels/level2.txt"), new Levels("levels/level3.txt"),new Levels("levels/level4.txt")};
+  levels = new Levels[]{new Levels("levels/level1.txt"),new Levels("levels/level2.txt"),new Levels("levels/level3.txt"),new Levels("levels/level4.txt"),new Levels("levels/level5.txt"),
+    new Levels("levels/level6.txt"),new Levels("levels/level7.txt"),new Levels("levels/level8.txt"),new Levels("levels/level9.txt"),new Levels("levels/level10.txt"),
+    new Levels("levels/level11.txt"),new Levels("levels/level12.txt"),new Levels("levels/level13.txt"),new Levels("levels/level14.txt"),new Levels("levels/level15.txt")
+  };
 
 
   paused=false;
@@ -50,7 +57,7 @@ void setup(){
   int x=100;
   int y=100;
   int num=1;
-  for(int r=0;r<4;r++){
+  for(int r=0;r<3;r++){
     for(int c=0;c<5;c++){
       Button but=new Button(x,y,80,80,String.valueOf(num));
       levelSelectButtons.add(but);
@@ -58,7 +65,7 @@ void setup(){
       x+=200;
     }
     x=100;
-    y+=150;
+    y+=200;
   }
   Button title=new Button(20,20,60,60,"Title");
   levelSelectButtons.add(title);
@@ -68,15 +75,10 @@ void setup(){
   pauseButtons.add(levelSelect);
 
   titleScreenButtons=new ArrayList<Button>();
-  Button levelSelectTitle=new Button(width/2+50,height*3/5,300,100,"Start");
+  Button levelSelectTitle=new Button(width/2-150,height*3/5,300,100,"Start");
   titleScreenButtons.add(levelSelectTitle);
-  Button settings=new Button(width/2-350,height*3/5,300,100,"Settings");
-  titleScreenButtons.add(settings);
 
   winToTitle=new Button(450,height/2,200,80,"Back To Title");
-
-  Button center=new Button(width/2,height/2,1,1," ");
-  titleScreenButtons.add(center);
 }
 
 void draw(){
@@ -113,6 +115,7 @@ void draw(){
   background(levels[levelIndex].backdrop);
   gravity = levels[levelIndex].gravity;
   obstacles = levels[levelIndex].obstacles;
+  textBoxes = levels[levelIndex].textBoxes;
   startPosition = levels[levelIndex].startPosition;
   float jump = levels[levelIndex].jump;
   float walk = levels[levelIndex].walk;
@@ -139,6 +142,10 @@ void draw(){
  for (Block s : obstacles){
   s.display();
  }
+ for(Text t:textBoxes){
+   t.display();
+ }
+ 
  try{
   moveCharacter();
      vaino.display();
@@ -154,16 +161,16 @@ void draw(){
 
 void displayPause(){
   rectMode(CORNER);
-  stroke(#233CD8);
+  stroke(#2B48FA);
   strokeWeight(3);
-  fill(#0D98FF);
+  fill(#A0ADFF);
   rect(width/4,height/4,width/2,height/2);
   fill(0);
   textAlign(CENTER);
-  textSize(40);
+  textSize(80);
   text("Paused",width/2,height/3);
-  textSize(20);
-  text("Press 'P' To Unpause",width/2,height*5/13);
+  textSize(60);
+  text("Press 'P' To Unpause",width/2,height*3/7);
 }
 
 void levelSelect(){
@@ -182,11 +189,11 @@ void levelSelect(){
 }
 
 void title(){
-  background(#24ADFF);
+  background(#A0ADFF);
   fill(0);
   textAlign(CENTER,CENTER);
   textSize(80);
-  textFont(createFont("Gabriola.ttf",128));
+  textFont(mainFont);
   text("KANTELE QUEST",width/2,height/4);
   for(int i=0;i<titleScreenButtons.size();i++){
     Button button=titleScreenButtons.get(i);
@@ -198,22 +205,19 @@ void title(){
 }
 
 void displayWin(){
-  background(#24ADFF);
+  background(#A0ADFF);
   fill(0);
   textAlign(CENTER,CENTER);
   textSize(80);
-  text("YOU WIN!!!",width/2,height/4);
+  text("You Have Created Your Kantele!",width/2,height/4);
+  text("YOU WIN!!!",width/2,height/4+80);
   winToTitle.displayButton();
-}
-
-void displaySettings(){
-  ;
 }
 
 void keyPressed(){
   if(paused==false){
      if (key==CODED){
-
+      if (started){
       if (vaino.mode != 0 && keyCode==UP && !vaino.directions[0]){
         vaino.accelerate(new PVector(0,-vaino.jump));
         vaino.directions[0]=true;
@@ -226,7 +230,7 @@ void keyPressed(){
         vaino.accelerate(new PVector(vaino.walk,0));
         vaino.directions[2]=true;
       }
-
+      }
 
     }
   }
@@ -255,7 +259,7 @@ void keyPressed(){
 
 void keyReleased(){
      if (key==CODED){
-
+      if (started){
       if (keyCode==UP){
         if (vaino.vel.y<-vaino.jump){
         vaino.accelerate(new PVector(0,vaino.jump));
@@ -280,7 +284,7 @@ void keyReleased(){
         }
         vaino.directions[2]=false;
       }
-
+      }
     }
 }
 
@@ -293,9 +297,6 @@ void mousePressed(){
         if(button.text=="Start"){
           titleScreen=false;
           levelSelectScreen=true;
-        }
-        else if(button.text=="Settings"){
-          displaySettings();
         }
       }
     }
@@ -340,9 +341,9 @@ void reset() throws Exception{
   levels[levelIndex].reset();
 
   mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
-      mainTrack.setKillOnEnd(true);
-    mainTrack.setToEnd();
-    mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
+  mainTrack.setKillOnEnd(true);
+  mainTrack.setToEnd();
+  mainTrack = new SamplePlayer(audioCon, SampleManager.sample(sketchPath(levels[levelIndex].track)));
   mainTrack.setKillOnEnd(false);
   mainTrack.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
   mainGain.addInput(mainTrack);
@@ -355,10 +356,12 @@ void reset() throws Exception{
 }
 
 void levelup() throws Exception{
-    mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
-      mainTrack.setKillOnEnd(true);
-    mainTrack.setToEnd();
+  mainTrack.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
+  mainTrack.setKillOnEnd(true);
+  mainTrack.setToEnd();
   levels[levelIndex].reset();
+  vaino.vel= new PVector(0,0);
+  vaino.acc= new PVector(0,0);
   if (levelIndex<levels.length-1){
       vaino.display();
      levelIndex+=1;
@@ -475,7 +478,7 @@ void moveCharacter() throws Exception{
          for (PVector vertex : vaino.modeBox){
            vertex.add(obstacles.get(vaino.modeIndex).velocity);
          }
-
+        // vaino.pos.add(obstacles.get(vaino.modeIndex).velocity);
         if (PI/2<vaino.modeHeading && vaino.modeHeading<3*PI/2){
         if (vaino.modeHeading==PI){
 
@@ -534,11 +537,11 @@ void moveCharacter() throws Exception{
       PVector[] side = new PVector[]{b.edges[(pointIndex)%b.edges.length],b.edges[(pointIndex+1)%b.edges.length]};
       stroke(255);
       strokeWeight(1);
-    //  line(side[0].x,side[0].y,side[1].x,side[1].y);
+   //   line(side[0].x,side[0].y,side[1].x,side[1].y);
       strokeWeight(5);
       for (int i = 0; i < pCorners.length; i++){
          PVector[] beam = new PVector[]{pCorners[i],PVector.sub(OldpCorners[i],vaino.vel)};
-      //   line(beam[0].x,beam[0].y,beam[1].x+100*(beam[1].x-beam[0].x),beam[1].y+100*(beam[1].y-beam[0].y));
+   //      line(beam[0].x,beam[0].y,beam[1].x+100*(beam[1].x-beam[0].x),beam[1].y+100*(beam[1].y-beam[0].y));
 
          float intersectX;
          float intersectY;
@@ -652,6 +655,9 @@ void moveCharacter() throws Exception{
       //println();
       (vaino.pos.sub(PVector.mult(vaino.vel, collisions.get(0)[0]))).sub(vaino.vel.copy().normalize().mult(0.5));
 
+       
+      
+      
         PVector[] barrier = new PVector[]{new PVector(collisions.get(0)[2],collisions.get(0)[3]),new PVector(collisions.get(0)[4],collisions.get(0)[5])};
 
           PVector shifter = new PVector(collisions.get(0)[2]-collisions.get(0)[4],collisions.get(0)[3]-collisions.get(0)[5]).rotate(PI/2).normalize().mult(1);
