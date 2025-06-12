@@ -1,8 +1,7 @@
-
-
 class Levels{
   
   ArrayList<Block> obstacles = new ArrayList<Block>();
+  ArrayList<Text> textBoxes = new ArrayList<Text>();
   PVector gravity;
   PVector startPosition;
   float jump;
@@ -30,8 +29,19 @@ class Levels{
   
   void reset(){
     obstacles.clear();
+    textBoxes.clear();
           int index = 9;
       while (index<lines.length){
+        if(lines[index].charAt(0)=='T'){
+          int textX=Integer.parseInt(lines[index+1]);
+          int textY=Integer.parseInt(lines[index+2]);
+          String t=lines[index+3];
+          int size=Integer.parseInt(lines[index+4]);
+          textBoxes.add(new Text(textX,textY,t,color(#F0BC11),size));
+          index+=9;
+        }
+        
+      else{
         PImage blockGraphics = loadImage(lines[index+1]);
         int pointCount = Integer.parseInt(lines[index+2]);
         PVector[] edges = new PVector[pointCount];
@@ -61,8 +71,10 @@ class Levels{
         } else if (lines[index].charAt(0)=='G'){
           obstacles.add(new Goal(edges, blockGraphics));
         }
+        
         index+=7+2*pointCount;
       }
+    }  
   }
   
   
