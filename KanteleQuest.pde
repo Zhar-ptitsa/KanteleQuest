@@ -14,6 +14,7 @@ Gain mainGain;
 
 AudioContext audioCon;
 
+PFont mainFont;
 
 ArrayList<Button> levelSelectButtons;
 ArrayList<Button> pauseButtons;
@@ -35,10 +36,10 @@ void setup(){
   audioCon  = AudioContext.getDefaultContext();  //FOR WINDOWS
   mainGain = new Gain(2, 0.05);
 
-
+  mainFont = createFont(sketchPath("Gabriola.ttf"),128);
   started = false;
   levelIndex = 0;
-  levels = new Levels[]{/*new Levels("levels/level1.txt"), new Levels("levels/level2.txt"), new Levels("levels/level3.txt"),new Levels("levels/level4.txt"),*/new Levels("levels/training1.txt"),new Levels("levels/training2.txt"),new Levels("levels/training3.txt"),new Levels("levels/training4.txt"),new Levels("levels/training5.txt")};
+  levels = new Levels[]{new Levels("levels/training1.txt"),new Levels("levels/training2.txt"),new Levels("levels/training3.txt"),new Levels("levels/training4.txt"),new Levels("levels/training5.txt"), new Levels("levels/Ilmarinen1.txt")};
 
 
   paused=false;
@@ -183,7 +184,7 @@ void title(){
   fill(0);
   textAlign(CENTER,CENTER);
   textSize(80);
-  textFont(createFont("Gabriola.ttf",128));
+  textFont(mainFont);
   text("KANTELE QUEST",width/2,height/4);
   for(int i=0;i<titleScreenButtons.size();i++){
     Button button=titleScreenButtons.get(i);
@@ -651,6 +652,9 @@ void moveCharacter() throws Exception{
       //println();
       (vaino.pos.sub(PVector.mult(vaino.vel, collisions.get(0)[0]))).sub(vaino.vel.copy().normalize().mult(0.5));
 
+       
+      
+      
         PVector[] barrier = new PVector[]{new PVector(collisions.get(0)[2],collisions.get(0)[3]),new PVector(collisions.get(0)[4],collisions.get(0)[5])};
 
           PVector shifter = new PVector(collisions.get(0)[2]-collisions.get(0)[4],collisions.get(0)[3]-collisions.get(0)[5]).rotate(PI/2).normalize().mult(1);

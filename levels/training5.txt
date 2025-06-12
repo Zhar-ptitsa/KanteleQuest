@@ -1,4 +1,4 @@
-images/backgrounds/finland-185853_1920.jpg
+images/backgrounds/Training5.png
 music/Track11_1.wav
 50
 550
@@ -8,7 +8,7 @@ music/Track11_1.wav
 5
 images/playerSprites/default
 BM
-images/bluePlatform.png
+images/cratePlatform.png
 4
 300
 670
@@ -23,7 +23,7 @@ images/bluePlatform.png
 300
 0
 O
-images/redSquare.png
+images/spikeSquare1.png
 4
 720
 670
@@ -38,7 +38,7 @@ images/redSquare.png
 -
 -
 G
-images/yellow50Square.png
+images/Door.png
 4
 1080
 620

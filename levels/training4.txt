@@ -1,4 +1,4 @@
-images/backgrounds/finland-185853_1920.jpg
+images/backgrounds/Training4.png
 music/Track10_1.wav
 50
 550
@@ -8,7 +8,7 @@ music/Track10_1.wav
 5
 images/playerSprites/default
 B
-images/thinblue1080Plate.png
+images/thinbrick1080Plate.png
 4
 1080
 670
@@ -23,7 +23,7 @@ images/thinblue1080Plate.png
 -
 -
 O
-images/redSquare.png
+images/spikeSquare1.png
 4
 720
 670
@@ -38,7 +38,7 @@ images/redSquare.png
 -
 -
 G
-images/yellow50Square.png
+images/Door.png
 4
 1080
 620
