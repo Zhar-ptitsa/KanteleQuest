@@ -1,5 +1,5 @@
 images/backgrounds/blackBackground.png
-music/Track1_1.wav
+music/Track2_1.wav
 50
 600
 0
