@@ -33,9 +33,9 @@ void setup(){
   frameRate(60);
   size(1080,720);
   JavaSoundAudioIO jsaio = new JavaSoundAudioIO(512);
-  jsaio.printMixerInfo();
+//  jsaio.printMixerInfo();
   jsaio.selectMixer(1);
-  audioCon = new AudioContext(jsaio);    //FOR LINUX
+//  audioCon = new AudioContext(jsaio);    //FOR LINUX
   audioCon  = AudioContext.getDefaultContext();  //FOR WINDOWS
   mainGain = new Gain(2, 0.05);
 
