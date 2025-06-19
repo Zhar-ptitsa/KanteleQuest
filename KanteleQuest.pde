@@ -27,15 +27,21 @@ boolean levelSelectScreen;
 boolean titleScreen;
 boolean youWin;
 
+boolean won;
+Button ethan;
+boolean ethanScreen;
+Button byeEthan;
+PImage ethanPic;
+
 // Everything commented out was used for debugging
 
 void setup(){
   frameRate(60);
   size(1080,720);
   JavaSoundAudioIO jsaio = new JavaSoundAudioIO(512);
-//  jsaio.printMixerInfo();
+  jsaio.printMixerInfo();
   jsaio.selectMixer(1);
-//  audioCon = new AudioContext(jsaio);    //FOR LINUX
+  audioCon = new AudioContext(jsaio);    //FOR LINUX
   audioCon  = AudioContext.getDefaultContext();  //FOR WINDOWS
   mainGain = new Gain(2, 0.05);
 
@@ -52,6 +58,10 @@ void setup(){
   levelSelectScreen=false;
   titleScreen=true;
   youWin=false;
+
+  won=false;
+  ethanPic=loadImage("images/backgrounds/ethan.jpg");
+
 
   levelSelectButtons=new ArrayList<Button>();
   int x=100;
@@ -86,7 +96,13 @@ void draw(){
   if(titleScreen){
     title();
   }
+  
+  else if(ethanScreen){
+    ethan();
+  }
+  
   else if(youWin){
+    won=true;
     displayWin();
     if(winToTitle.overButton()){
       winToTitle.displayHover();
@@ -202,6 +218,24 @@ void title(){
       button.displayHover();
     }
   }
+  
+  if(won){
+    ethan=new Button(10,10,110,50,"Hi Ethan");
+    ethan.displayButton();
+    if(ethan.overButton()){
+      ethan.displayHover();
+    }
+  }
+  
+}
+
+void ethan(){
+  background(ethanPic);
+  byeEthan=new Button(10,10,110,50,"Bye Ethan");
+  byeEthan.displayButton();
+  if(byeEthan.overButton()){
+    byeEthan.displayHover();
+  }
 }
 
 void displayWin(){
@@ -300,7 +334,23 @@ void mousePressed(){
         }
       }
     }
+    
+    if(won){
+      if(ethan.overButton()){
+        titleScreen=false;
+        ethanScreen=true;
+      }
+    }
+    
   }
+  
+  else if(ethanScreen){
+    if(byeEthan.overButton()){
+      ethanScreen=false;
+      titleScreen=true;
+    }
+  }
+  
   else if(youWin){
     if(winToTitle.overButton()){
       youWin=false;
